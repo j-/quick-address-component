@@ -1,10 +1,8 @@
 import * as React from 'react';
-import { useSelector } from 'react-redux';
-import { getAddressByQueryResultId, RootReducerState, getQueryByQueryResultId } from '../store';
-import { AddressEntity, QueryEntity } from '../entities';
 
 export interface Props {
-  queryResultId: string;
+  addressLabel: string;
+  queryTerm: string;
 }
 
 const slice = (value: string, i: number) => [
@@ -12,17 +10,10 @@ const slice = (value: string, i: number) => [
   value.substring(i),
 ];
 
-const SuggestionText: React.FC<Props> = ({ queryResultId }) => {
-  const address = useSelector<RootReducerState, AddressEntity | null>((state) => getAddressByQueryResultId(state, queryResultId));
-  const query = useSelector<RootReducerState, QueryEntity | null>((state) => getQueryByQueryResultId(state, queryResultId));
+const SuggestionText: React.FC<Props> = ({ addressLabel, queryTerm: queryString }) => {
+  const queryTokens = queryString.split(/[^\w\d]+/g).map((token) => token.toLowerCase());
 
-  if (!address || !query) return null;
-
-  const { term } = query;
-  const { label } = address;
-  const queryTokens = term.split(/[^\w\d]+/g).map((token) => token.toLowerCase());
-
-  const children = label
+  const children = addressLabel
     .split(/([^\w\d]+)/g)
     .map((labelToken) => {
       const lowerCaseQueryToken = labelToken.toLowerCase();

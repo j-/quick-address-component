@@ -1,6 +1,6 @@
 import * as React from 'react';
 import AddressSuggestion from './AddressSuggestion';
-import SuggestionText from './SuggestionText';
+import SuggestionTextContainer from './SuggestionTextContainer';
 import { useSelector, useDispatch } from 'react-redux';
 import { getAddressByQueryResultId, RootReducerState, getHighlightedAddress } from '../store';
 import { AddressEntity } from '../entities';
@@ -28,7 +28,7 @@ const QueryResult: React.FC<Props> = ({ queryResultId }) => {
       isHighlighted={isHighlighted}
       onClick={handleClick}
     >
-      <SuggestionText queryResultId={queryResultId} />
+      <SuggestionTextContainer queryResultId={queryResultId} />
     </AddressSuggestion>
   );
 };
