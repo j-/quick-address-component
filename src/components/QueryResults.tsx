@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { getCurrentQueryResults, isResultsDismissed } from '../store';
 import { dismissResults } from '../store/actions';
 import QueryResult from './QueryResult';
+import { QueryResultEntity } from '../entities';
 
 export interface Props {
 
@@ -21,11 +22,11 @@ const QueryResults: React.FC = () => {
     e.preventDefault();
     dispatch(dismissResults());
   };
-  
+
   return (
     <div className="QueryResults mt-3 mt-3">
       <div className="QueryResults-results list-group">
-        {queryResults.map((queryResult) => (
+        {queryResults.map((queryResult: QueryResultEntity) => (
           <QueryResult queryResultId={queryResult.id} key={queryResult.id} />
         ))}
       </div>

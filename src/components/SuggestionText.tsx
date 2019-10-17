@@ -13,8 +13,8 @@ const slice = (value: string, i: number) => [
 ];
 
 const SuggestionText: React.FC<Props> = ({ queryResultId }) => {
-  const address = useSelector<RootReducerState, AddressEntity>((state) => getAddressByQueryResultId(state, queryResultId));
-  const query = useSelector<RootReducerState, QueryEntity>((state) => getQueryByQueryResultId(state, queryResultId));
+  const address = useSelector<RootReducerState, AddressEntity | null>((state) => getAddressByQueryResultId(state, queryResultId));
+  const query = useSelector<RootReducerState, QueryEntity | null>((state) => getQueryByQueryResultId(state, queryResultId));
 
   if (!address || !query) return null;
 
@@ -41,7 +41,7 @@ const SuggestionText: React.FC<Props> = ({ queryResultId }) => {
         {child}
       </React.Fragment>
     ));
-  
+
   return <>{children}</>;
 };
 

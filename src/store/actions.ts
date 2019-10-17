@@ -1,6 +1,6 @@
 import { Action } from 'redux';
-import { QueryEntity } from '../entities';
-import { QASResultEntities, quickAddressSearch, getEntitiesFromQASResult, QuickAddressSearchOptions } from '../api';
+import { QueryEntity, QueryResultEntity } from '../entities';
+import { QASResultEntities, quickAddressSearch, getEntitiesFromQASResult, QuickAddressSearchOptions, AddressSearchResults } from '../api';
 import { ThunkAction } from 'redux-thunk';
 import { RootReducerState, getCurrentQueryResults, getHighlightedAddress } from '.';
 
@@ -171,7 +171,8 @@ export const query = (entity: QueryEntity, options?: QuickAddressSearchOptions):
       query: entity,
     },
   });
-  let qasResult, entities;
+  let qasResult: AddressSearchResults;
+  let entities: QASResultEntities;
   // Try and make a request to the QAS endpoint
   try {
     qasResult = await quickAddressSearch(entity.term, options);
@@ -183,6 +184,7 @@ export const query = (entity: QueryEntity, options?: QuickAddressSearchOptions):
         error: 'There was a problem contacting the address server',
       },
     });
+    return;
   }
   // Parse the response from the QAS endpoint
   try {
@@ -195,6 +197,7 @@ export const query = (entity: QueryEntity, options?: QuickAddressSearchOptions):
         error: 'There was a problem fetching address suggestions',
       },
     });
+    return;
   }
   dispatch<ActionQuerySuccess>({
     type: ACTION_QUERY_SUCCESS,
@@ -273,8 +276,9 @@ export const setActiveAddressId = (id: string): ActionSetActiveAddressId => ({
 export const incrementActiveResult = (): ThunkAction<void, RootReducerState, void, ActionSetActiveAddressId> => (dispatch, getState) => {
   const state = getState();
   const currentAddress = getHighlightedAddress(state);
+  if (!currentAddress) return;
   const queryResults = getCurrentQueryResults(state);
-  const currentIndex = queryResults.findIndex((queryResult) => queryResult.addressId === currentAddress.id);
+  const currentIndex = queryResults.findIndex((queryResult: QueryResultEntity) => queryResult.addressId === currentAddress.id);
   const maxIndex = queryResults.length - 1;
   if (currentIndex >= maxIndex) return;
   dispatch(setActiveAddressId(queryResults[currentIndex + 1].addressId));
@@ -283,8 +287,9 @@ export const incrementActiveResult = (): ThunkAction<void, RootReducerState, voi
 export const decrementActiveResult = (): ThunkAction<void, RootReducerState, void, ActionSetActiveAddressId> => (dispatch, getState) => {
   const state = getState();
   const currentAddress = getHighlightedAddress(state);
+  if (!currentAddress) return;
   const queryResults = getCurrentQueryResults(state);
-  const currentIndex = queryResults.findIndex((queryResult) => queryResult.addressId === currentAddress.id);
+  const currentIndex = queryResults.findIndex((queryResult: QueryResultEntity) => queryResult.addressId === currentAddress.id);
   const minIndex = 0;
   if (currentIndex <= minIndex) return;
   dispatch(setActiveAddressId(queryResults[currentIndex - 1].addressId));

@@ -48,14 +48,3 @@ export interface QueryResultEntity {
 export type HasQueryResultEntities = {
   queryResults: EntityMap<QueryResultEntity>;
 }
-
-// export interface QueryResultListEntity {
-//   /** Normalized query string */
-//   id: string;
-//   /** Array of query results */
-//   queryResults: QueryResultEntity['id'][];
-// }
-
-// export type HasQueryResultListEntities = {
-//   queryResultLists: EntityMap<QueryResultListEntity>;
-// }

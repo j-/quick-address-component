@@ -29,7 +29,10 @@ const Address: React.FC<Props> = () => {
       dispatch(dismissResults());
     } else if (e.key === 'Enter') {
       e.preventDefault();
-      dispatch(setAddress(breakdownAddress(highlightedAddress.partial)));
+      if (!highlightedAddress) return;
+      const address = breakdownAddress(highlightedAddress.partial);
+      if (!address) return;
+      dispatch(setAddress(address));
     } else if (e.key === 'ArrowUp') {
       e.preventDefault();
       dispatch(decrementActiveResult());
@@ -40,6 +43,7 @@ const Address: React.FC<Props> = () => {
   };
   React.useEffect(() => {
     const el = addressLine1Ref.current;
+    if (!el) return;
     let autoFill = false;
     const handler = (e: AnimationEvent) => {
       const start = e.animationName === 'onAutoFillStart';

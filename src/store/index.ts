@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux';
-import { QueryEntity } from '../entities';
+import { QueryEntity, QueryResultEntity } from '../entities';
 import * as addresses from './reducer-addresses';
 import * as current from './reducer-current';
 import * as interactions from './reducer-interactions';
@@ -73,8 +73,19 @@ export const hasQueryResultsForQueryId = (state: RootReducerState, queryId: stri
 /* Combined selectors */
 
 export const getAddressQueryTerm = (state: RootReducerState) => getAddressLine1(state);
-export const getCurrentQuery = (state: RootReducerState) => getQueryById(state, getCurrentQueryId(state));
-export const getCurrentQueryResults = (state: RootReducerState) => getQueryResultsForQueryId(state, getCurrentQueryId(state));
+
+export const getCurrentQuery = (state: RootReducerState) => {
+  const queryId = getCurrentQueryId(state);
+  if (!queryId) return null;
+  return getQueryById(state, queryId);
+};
+
+export const getCurrentQueryResults = (state: RootReducerState) => {
+  const queryId = getCurrentQueryId(state);
+  if (!queryId) return [];
+  return getQueryResultsForQueryId(state, queryId);
+};
+
 
 export const getAddressByQueryResultId = (state: RootReducerState, queryResultId: string) => {
   const queryResult = getQueryResultById(state, queryResultId);
@@ -100,7 +111,7 @@ export const getHighlightedQueryResult = (state: RootReducerState) => {
   const addressId = getActiveAddressId(state);
   const results = getCurrentQueryResults(state);
   return (
-    results.find((queryResult) => queryResult.addressId === addressId) ||
+    results.find((queryResult: QueryResultEntity) => queryResult.addressId === addressId) ||
     getFirstCurrentQueryResult(state)
   );
 };

@@ -1,9 +1,9 @@
 /**
  * Makes requests to this host.
- * 
+ *
  * * https://creditcardapp.anz.com/ (COLA Prod)
  */
-export const API_HOST = 'https://tn2ju.sse.codesandbox.io/';
+export const API_HOST = 'http://localhost:8080/';
 
 /**
  * The minimum number of significant characters a user must type before a

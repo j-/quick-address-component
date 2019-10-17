@@ -13,9 +13,9 @@ export interface Props {
 
 const QueryResult: React.FC<Props> = ({ queryResultId }) => {
   const dispatch = useDispatch();
-  const address = useSelector<RootReducerState, AddressEntity>((state) => getAddressByQueryResultId(state, queryResultId));
+  const address = useSelector<RootReducerState, AddressEntity | null>((state) => getAddressByQueryResultId(state, queryResultId));
   const highlightedAddress = useSelector(getHighlightedAddress);
-  if (!address) return null;
+  if (!address || !highlightedAddress) return null;
   const addressId = address.id;
   const isHighlighted = highlightedAddress.id === address.id;
   const handleClick: React.MouseEventHandler = (e) => {
