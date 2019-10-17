@@ -25,7 +25,6 @@ const QueryResult: React.FC<Props> = ({ queryResultId }) => {
   };
   return (
     <AddressSuggestion
-      addressId={addressId}
       isHighlighted={isHighlighted}
       onClick={handleClick}
     >
