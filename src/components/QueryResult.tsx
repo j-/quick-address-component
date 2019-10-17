@@ -16,7 +16,6 @@ const QueryResult: React.FC<Props> = ({ queryResultId }) => {
   const address = useSelector<RootReducerState, AddressEntity | null>((state) => getAddressByQueryResultId(state, queryResultId));
   const highlightedAddress = useSelector(getHighlightedAddress);
   if (!address || !highlightedAddress) return null;
-  const addressId = address.id;
   const isHighlighted = highlightedAddress.id === address.id;
   const handleClick: React.MouseEventHandler = (e) => {
     e.preventDefault();
