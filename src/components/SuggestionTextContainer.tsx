@@ -8,11 +8,6 @@ export interface Props {
   queryResultId: string;
 }
 
-const slice = (value: string, i: number) => [
-  value.substring(0, i),
-  value.substring(i),
-];
-
 const SuggestionTextContainer: React.FC<Props> = ({ queryResultId }) => {
   const address = useSelector<RootReducerState, AddressEntity | null>((state) => getAddressByQueryResultId(state, queryResultId));
   const query = useSelector<RootReducerState, QueryEntity | null>((state) => getQueryByQueryResultId(state, queryResultId));
