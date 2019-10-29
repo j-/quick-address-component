@@ -7,11 +7,13 @@
   "dependencies": {
     "@storybook/addon-knobs": "^5.2.4",
     "@types/classnames": "2.2.9",
+    "@types/jest": "^24.0.20",
     "@types/react-redux": "7.1.4",
     "@types/storybook__react": "^4.0.2",
     "awesome-typescript-loader": "^5.2.1",
     "bootstrap": "4.3.1",
     "classnames": "2.2.6",
+    "jest": "^24.9.0",
     "react": "16.8.4",
     "react-dom": "16.8.4",
     "react-redux": "7.1.1",

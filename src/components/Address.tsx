@@ -6,7 +6,7 @@ import { getAddressLine1, getAddressLine2, getSuburb, getState, getPostcode, get
 import { setAddressLine1, setAddressLine2, setSuburb, setState, setPostcode, dismissResults, setAddress, incrementActiveResult, decrementActiveResult } from '../store/actions';
 import QueryStatus from './QueryStatus';
 import QueryResults from './QueryResults';
-import { breakdownAddress } from '../address';
+import { parsePartialAddress } from '../address';
 
 export interface Props {
 
@@ -30,7 +30,7 @@ const Address: React.FC<Props> = () => {
     } else if (e.key === 'Enter') {
       e.preventDefault();
       if (!highlightedAddress) return;
-      const address = breakdownAddress(highlightedAddress.partial);
+      const address = parsePartialAddress(highlightedAddress.partial);
       if (!address) return;
       dispatch(setAddress(address));
     } else if (e.key === 'ArrowUp') {

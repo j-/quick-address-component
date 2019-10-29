@@ -4,7 +4,7 @@ import SuggestionTextContainer from './SuggestionTextContainer';
 import { useSelector, useDispatch } from 'react-redux';
 import { getAddressByQueryResultId, RootReducerState, getHighlightedAddress } from '../store';
 import { AddressEntity } from '../entities';
-import { breakdownAddress } from '../address';
+import { parsePartialAddress } from '../address';
 import { setAddress } from '../store/actions';
 
 export interface Props {
@@ -19,7 +19,7 @@ const QueryResult: React.FC<Props> = ({ queryResultId }) => {
   const isHighlighted = highlightedAddress.id === address.id;
   const handleClick: React.MouseEventHandler = (e) => {
     e.preventDefault();
-    const values = breakdownAddress(address.partial);
+    const values = parsePartialAddress(address.partial);
     if (values) dispatch(setAddress(values));
   };
   return (
