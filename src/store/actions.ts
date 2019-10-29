@@ -1,6 +1,6 @@
 import { Action } from 'redux';
 import { QueryEntity, QueryResultEntity } from '../entities';
-import { QASResultEntities, quickAddressSearch, getEntitiesFromQASResult, QuickAddressSearchOptions, AddressSearchResults } from '../api';
+import { QASResultEntities, quickAddressSearch, getEntitiesFromQASResult, AddressSearchOptions, AddressSearchResults } from '../api';
 import { ThunkAction } from 'redux-thunk';
 import { RootReducerState, getCurrentQueryResults, getHighlightedAddress } from '.';
 
@@ -164,7 +164,7 @@ export const isActionQueryStart = (action: Action): action is ActionQueryStart =
   action.type === ACTION_QUERY_START
 );
 
-export const query = (entity: QueryEntity, options?: QuickAddressSearchOptions): ThunkAction<void, RootReducerState, void, ActionQueryStart | ActionQuerySuccess | ActionQueryError> => async (dispatch) => {
+export const query = (entity: QueryEntity, options?: AddressSearchOptions): ThunkAction<void, RootReducerState, void, ActionQueryStart | ActionQuerySuccess | ActionQueryError> => async (dispatch) => {
   dispatch<ActionQueryStart>({
     type: ACTION_QUERY_START,
     data: {

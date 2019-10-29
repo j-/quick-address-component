@@ -196,7 +196,7 @@ export interface AddressSearchResults {
   verifyLevel?: 'None' | 'Verified' | 'InteractionRequired' | 'PremisesPartial' | 'StreetPartial' | 'Multiple';
 }
 
-export interface QuickAddressSearchOptions {
+export interface AddressSearchOptions {
   /**
    * Page limit.
    */
@@ -215,17 +215,17 @@ export interface QuickAddressSearchOptions {
   engine?: 'Singleline' | 'Verification' | 'Typedown' | 'Intuitive' | 'Keyfinder';
 }
 
-export const DEFAULT_OPTIONS: Readonly<QuickAddressSearchOptions> = Object.freeze({
+export const DEFAULT_OPTIONS: Readonly<AddressSearchOptions> = Object.freeze({
   limit: MAX_SEARCH_RESULTS,
 });
 
-export const buildSearchURL = (query: string, options?: QuickAddressSearchOptions): string => {
+export const buildSearchURL = (query: string, options?: AddressSearchOptions): string => {
   const { limit } = Object.assign({}, DEFAULT_OPTIONS, options);
   const queryString = encodeURIComponent(query);
   return `${API_HOST}api/electronicverification/verifications/addresses?limit=${limit}&queryString=${queryString}`;
 };
 
-export const quickAddressSearch = async (term: string, options?: QuickAddressSearchOptions): Promise<AddressSearchResults> => {
+export const quickAddressSearch = async (term: string, options?: AddressSearchOptions): Promise<AddressSearchResults> => {
   const url = buildSearchURL(term, options);
   const res = await fetch(url);
   return await res.json();
