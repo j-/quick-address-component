@@ -23,7 +23,7 @@ const reducer: Reducer<ReducerState> = (state = DEFAULT_STATE, action) => {
       dismissResults: false,
     };
   }
-  
+
   return state;
 };
 

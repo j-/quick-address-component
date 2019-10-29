@@ -9,7 +9,7 @@ const INPUT_DEBOUNCE_MS = 250;
 
 export const logicMiddleware: Middleware<void, RootReducerState> = ({ getState, dispatch }) => (next) => async (action) => {
   next(action);
-  
+
   if (!isActionSetAddressLine1(action)) {
     // From this point on we only care about address line 1.
     // Exit early.

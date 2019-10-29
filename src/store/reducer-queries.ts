@@ -25,7 +25,7 @@ const reducer: Reducer<ReducerState> = (state = DEFAULT_STATE, action) => {
       },
     };
   }
-  
+
   if (isActionQueryStart(action)) {
     const { query } = action.data;
     return {
