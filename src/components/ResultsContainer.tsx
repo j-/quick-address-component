@@ -13,11 +13,11 @@ const ResultsContainer: React.FC = ({ children }) => {
   return (
     <div className="ResultsContainer card border-primary">
       {children}
-      <div className="ResultsContainer-actions card-footer">
+      <div className="ResultsContainer-actions card-footer p-1">
         <button
           type="button"
           onClick={handleClickDismiss}
-          className="btn btn-light text-left"
+          className="btn btn-light btn-sm text-left"
         >
           Dismiss suggestions
         </button>

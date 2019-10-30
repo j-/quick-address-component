@@ -7,7 +7,7 @@ export interface Props extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 
 const AddressSuggestion: React.FC<Props> = ({ isHighlighted, ...props }) => (
   <button
-    className={classNames('AddressSuggestion list-group-item list-group-item-action', isHighlighted && 'active')}
+    className={classNames('AddressSuggestion list-group-item list-group-item-action btn-sm p-2', isHighlighted && 'active')}
     type="button"
     {...props}
   />
