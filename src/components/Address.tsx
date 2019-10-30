@@ -66,11 +66,8 @@ const Address: React.FC<Props> = () => {
     el.addEventListener('animationstart', handler);
     return () => el.removeEventListener('animationstart', handler);
   });
-  const handleBlur = () => {
-    dispatch(dismissResults());
-  };
   return (
-    <div className="Address" onBlur={handleBlur}>
+    <div className="Address">
       <div className="Address-suggest-container">
         <div className="Address-line-1-container form-group">
           <label htmlFor={id('Address-line-1')}>Address line 1</label><br />
