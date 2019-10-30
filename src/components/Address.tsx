@@ -48,6 +48,8 @@ const Address: React.FC<Props> = () => {
     if (e.key === 'Escape') {
       e.preventDefault();
       dispatch(dismissResults());
+    } else if (e.key === 'Tab') {
+      dispatch(dismissResults());
     } else if (e.key === 'Enter') {
       e.preventDefault();
       dispatch(selectHighlightedAddress());
