@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { QueryEntity } from '../entities';
-import { QueryState } from '../query';
+import { QueryState } from '../query-state';
 import RetryQueryButton from './RetryQueryButton';
 import { useSelector } from 'react-redux';
 import { getQueryById, hasQueryResultsForQueryId, RootReducerState } from '../store';

@@ -1,4 +1,4 @@
-import { QueryState } from './query';
+import { QueryState } from './query-state';
 
 export interface EntityMap<T> {
   [entityId: string]: T;

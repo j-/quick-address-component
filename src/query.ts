@@ -1,11 +1,5 @@
 import { QueryEntity } from './entities';
-
-export enum QueryState {
-  DEFAULT = 'DEFAULT',
-  PENDING = 'PENDING',
-  SUCCESS = 'SUCCESS',
-  FAILURE = 'FAILURE',
-}
+import { QueryState } from './query-state';
 
 export const normalizeQuery = (query: string) => {
   return query
