@@ -10,7 +10,6 @@ import FormGroupPostcode from './FormGroupPostcode';
 
 import {
   getAddressLine1,
-  getCurrentQuery,
   hasAddressAfterHighlighted,
   hasAddressBeforeHighlighted,
 } from '../store';
@@ -34,7 +33,6 @@ const Address: React.FC<Props> = () => {
   const id = useID();
   const dispatch = useDispatch();
   const [addressLine1, handleChangeAddressLine1] = useAddressField(getAddressLine1, setAddressLine1);
-  const currentQuery = useSelector(getCurrentQuery);
   const hasAddressBefore = useSelector(hasAddressBeforeHighlighted);
   const hasAddressAfter = useSelector(hasAddressAfterHighlighted);
   const handleKeyDownAddressLine1: React.KeyboardEventHandler = (e) => {
