@@ -121,3 +121,33 @@ export const getHighlightedAddress = (state: RootReducerState) => {
   if (!queryResult) return null;
   return getAddressByQueryResultId(state, queryResult.id);
 };
+
+export const getAddressBeforeHighlighted = (state: RootReducerState) => {
+  const currentAddress = getHighlightedAddress(state);
+  if (!currentAddress) return null;
+  const queryResults = getCurrentQueryResults(state);
+  const currentIndex = queryResults.findIndex((queryResult: QueryResultEntity) => queryResult.addressId === currentAddress.id);
+  const minIndex = 0;
+  if (currentIndex <= minIndex) return null;
+  const queryResult = queryResults[currentIndex - 1];
+  return getAddressByQueryResultId(state, queryResult.id);
+};
+
+export const hasAddressBeforeHighlighted = (state: RootReducerState) => (
+  getAddressBeforeHighlighted(state) !== null
+);
+
+export const getAddressAfterHighlighted = (state: RootReducerState) => {
+  const currentAddress = getHighlightedAddress(state);
+  if (!currentAddress) return null;
+  const queryResults = getCurrentQueryResults(state);
+  const currentIndex = queryResults.findIndex((queryResult: QueryResultEntity) => queryResult.addressId === currentAddress.id);
+  const maxIndex = queryResults.length - 1;
+  if (currentIndex >= maxIndex) return null;
+  const queryResult = queryResults[currentIndex + 1];
+  return getAddressByQueryResultId(state, queryResult.id);
+};
+
+export const hasAddressAfterHighlighted = (state: RootReducerState) => (
+  getAddressAfterHighlighted(state) !== null
+);

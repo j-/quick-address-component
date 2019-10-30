@@ -2,10 +2,31 @@ import * as React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useID } from '../use-id';
 import { useAddressField } from '../use-address-field';
-import { getAddressLine1, getAddressLine2, getSuburb, getState, getPostcode, getCurrentQuery } from '../store';
-import { setAddressLine1, setAddressLine2, setSuburb, setState, setPostcode, dismissResults, incrementActiveResult, decrementActiveResult, selectHighlightedAddress } from '../store/actions';
 import QueryStatus from './QueryStatus';
 import QueryResults from './QueryResults';
+
+import {
+  getAddressLine1,
+  getAddressLine2,
+  getCurrentQuery,
+  getPostcode,
+  getState,
+  getSuburb,
+  hasAddressAfterHighlighted,
+  hasAddressBeforeHighlighted,
+} from '../store';
+
+import {
+  decrementActiveResult,
+  dismissResults,
+  incrementActiveResult,
+  selectHighlightedAddress,
+  setAddressLine1,
+  setAddressLine2,
+  setPostcode,
+  setState,
+  setSuburb,
+} from '../store/actions';
 
 export interface Props {
 
@@ -21,6 +42,8 @@ const Address: React.FC<Props> = () => {
   const [state, handleChangeState] = useAddressField(getState, setState);
   const [postcode, handleChangePostcode] = useAddressField(getPostcode, setPostcode);
   const currentQuery = useSelector(getCurrentQuery);
+  const hasAddressBefore = useSelector(hasAddressBeforeHighlighted);
+  const hasAddressAfter = useSelector(hasAddressAfterHighlighted);
   const handleKeyDownAddressLine1: React.KeyboardEventHandler = (e) => {
     if (e.key === 'Escape') {
       e.preventDefault();
@@ -28,10 +51,10 @@ const Address: React.FC<Props> = () => {
     } else if (e.key === 'Enter') {
       e.preventDefault();
       dispatch(selectHighlightedAddress());
-    } else if (e.key === 'ArrowUp') {
+    } else if (e.key === 'ArrowUp' && hasAddressBefore) {
       e.preventDefault();
       dispatch(decrementActiveResult());
-    } else if (e.key === 'ArrowDown') {
+    } else if (e.key === 'ArrowDown' && hasAddressAfter) {
       e.preventDefault();
       dispatch(incrementActiveResult());
     }

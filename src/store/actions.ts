@@ -2,7 +2,7 @@ import { Action } from 'redux';
 import { QueryEntity, QueryResultEntity } from '../entities';
 import { QASResultEntities, quickAddressSearch, getEntitiesFromQASResult, AddressSearchOptions, AddressSearchResults } from '../api';
 import { ThunkAction } from 'redux-thunk';
-import { RootReducerState, getCurrentQueryResults, getHighlightedAddress } from '.';
+import { RootReducerState, getCurrentQueryResults, getHighlightedAddress, getAddressBeforeHighlighted, getAddressAfterHighlighted } from '.';
 import { parsePartialAddress } from '../parse-partial-address';
 
 /* Address line 1 */
@@ -276,24 +276,16 @@ export const setActiveAddressId = (id: string): ActionSetActiveAddressId => ({
 
 export const incrementActiveResult = (): ThunkAction<void, RootReducerState, void, ActionSetActiveAddressId> => (dispatch, getState) => {
   const state = getState();
-  const currentAddress = getHighlightedAddress(state);
-  if (!currentAddress) return;
-  const queryResults = getCurrentQueryResults(state);
-  const currentIndex = queryResults.findIndex((queryResult: QueryResultEntity) => queryResult.addressId === currentAddress.id);
-  const maxIndex = queryResults.length - 1;
-  if (currentIndex >= maxIndex) return;
-  dispatch(setActiveAddressId(queryResults[currentIndex + 1].addressId));
+  const address = getAddressAfterHighlighted(state);
+  if (!address) return;
+  dispatch(setActiveAddressId(address.id));
 };
 
 export const decrementActiveResult = (): ThunkAction<void, RootReducerState, void, ActionSetActiveAddressId> => (dispatch, getState) => {
   const state = getState();
-  const currentAddress = getHighlightedAddress(state);
-  if (!currentAddress) return;
-  const queryResults = getCurrentQueryResults(state);
-  const currentIndex = queryResults.findIndex((queryResult: QueryResultEntity) => queryResult.addressId === currentAddress.id);
-  const minIndex = 0;
-  if (currentIndex <= minIndex) return;
-  dispatch(setActiveAddressId(queryResults[currentIndex - 1].addressId));
+  const address = getAddressBeforeHighlighted(state);
+  if (!address) return;
+  dispatch(setActiveAddressId(address.id));
 };
 
 /* Select highlighted address */
