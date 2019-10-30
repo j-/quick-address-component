@@ -215,14 +215,16 @@ export interface AddressSearchOptions {
   engine?: 'Singleline' | 'Verification' | 'Typedown' | 'Intuitive' | 'Keyfinder';
 }
 
-export const DEFAULT_OPTIONS: Readonly<AddressSearchOptions> = Object.freeze({
+export const DEFAULT_OPTIONS: Readonly<Partial<AddressSearchOptions>> = Object.freeze({
   limit: MAX_SEARCH_RESULTS,
 });
 
-export const buildSearchURL = (query: string, options?: AddressSearchOptions): string => {
+export const buildSearchURL = (queryString: string, options?: AddressSearchOptions): string => {
   const { limit } = Object.assign({}, DEFAULT_OPTIONS, options);
-  const queryString = encodeURIComponent(query);
-  return `${API_HOST}api/electronicverification/verifications/addresses?limit=${limit}&queryString=${queryString}`;
+  const url = new URL('/api/electronicverification/verifications/addresses', API_HOST);
+  url.searchParams.set('queryString', queryString);
+  url.searchParams.set('limit', String(limit));
+  return url.toString();
 };
 
 export const quickAddressSearch = async (term: string, options?: AddressSearchOptions): Promise<AddressSearchResults> => {
