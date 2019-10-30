@@ -61,6 +61,9 @@ const Address: React.FC<Props> = () => {
       dispatch(incrementActiveResult());
     }
   };
+  const handleFocusField: React.FocusEventHandler = () => {
+    dispatch(dismissResults());
+  };
   React.useEffect(() => {
     const el = addressLine1Ref.current;
     if (!el) return;
@@ -101,6 +104,7 @@ const Address: React.FC<Props> = () => {
           autoComplete="address-line2"
           value={addressLine2}
           onChange={handleChangeAddressLine2}
+          onFocus={handleFocusField}
         />
       </div>
       <div className="Address-suburb-container form-group">
@@ -112,6 +116,7 @@ const Address: React.FC<Props> = () => {
           autoComplete="address-level2"
           value={suburb}
           onChange={handleChangeSuburb}
+          onFocus={handleFocusField}
         />
       </div>
       <div className="Address-state-container form-group">
@@ -123,6 +128,7 @@ const Address: React.FC<Props> = () => {
           autoComplete="address-level1"
           value={state}
           onChange={handleChangeState}
+          onFocus={handleFocusField}
         />
       </div>
       <div className="Address-postcode-container form-group">
@@ -134,6 +140,7 @@ const Address: React.FC<Props> = () => {
           autoComplete="postal-code"
           value={postcode}
           onChange={handleChangePostcode}
+          onFocus={handleFocusField}
         />
       </div>
     </div>
