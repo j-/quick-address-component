@@ -1,11 +1,10 @@
 import { Middleware } from 'redux';
 import { buildQueryEntity } from '../query';
+import { INPUT_DEBOUNCE_MS } from '../constants';
 import { RootReducerState, getAddressQueryTerm, shouldQueryFor, getQueryById } from '.';
 import { isActionSetAddressLine1, query } from './actions';
 
 const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
-
-const INPUT_DEBOUNCE_MS = 250;
 
 export const logicMiddleware: Middleware<void, RootReducerState> = ({ getState, dispatch }) => (next) => async (action) => {
   next(action);
