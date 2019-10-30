@@ -19,7 +19,7 @@ const ResultsContainer: React.FC = ({ children }) => {
           onClick={handleClickDismiss}
           className="btn btn-light btn-sm text-left"
         >
-          Dismiss suggestions
+          Dismiss suggestions <small>(Esc)</small>
         </button>
       </div>
     </div>
