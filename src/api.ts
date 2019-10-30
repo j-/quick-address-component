@@ -206,7 +206,7 @@ export interface AddressSearchOptions {
    */
   offset?: number;
   /**
-   * The name of the QAS Layout that is to be applied when the engine type is set to &#39;Verification&#39;.  This will dictate the format of the address returned.
+   * The name of the QAS Layout that is to be applied when the engine type is set to "Verification".  This will dictate the format of the address returned.
    */
   layout?: string;
   /**
