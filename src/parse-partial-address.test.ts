@@ -1,4 +1,4 @@
-import { parsePartialAddress } from './address';
+import { parsePartialAddress } from './parse-partial-address';
 
 describe('parsePartialAddress()', () => {
   it('parses an address with one line', () => {

@@ -6,7 +6,7 @@ import { getAddressLine1, getAddressLine2, getSuburb, getState, getPostcode, get
 import { setAddressLine1, setAddressLine2, setSuburb, setState, setPostcode, dismissResults, setAddress, incrementActiveResult, decrementActiveResult } from '../store/actions';
 import QueryStatus from './QueryStatus';
 import QueryResults from './QueryResults';
-import { parsePartialAddress } from '../address';
+import { parsePartialAddress } from '../parse-partial-address';
 
 export interface Props {
 

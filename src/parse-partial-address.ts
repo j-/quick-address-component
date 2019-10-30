@@ -8,7 +8,7 @@
  * 4. State (followed by two spaces)
  * 5. Postcode
  */
-const partialAddressExp = /^(?:(.+)\x20\x20)?(.+),\x20(.+)\x20\x20([A-Z]{2,3})\x20\x20([0-9]{4})$/;
+export const partialAddressExp = /^(?:(.+)\x20\x20)?(.+),\x20(.+)\x20\x20([A-Z]{2,3})\x20\x20([0-9]{4})$/;
 
 /**
  * Parse a partial address that's been combined into a single line. Returns

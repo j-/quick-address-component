@@ -4,7 +4,7 @@ import SuggestionTextContainer from './SuggestionTextContainer';
 import { useSelector, useDispatch } from 'react-redux';
 import { getAddressByQueryResultId, RootReducerState, getHighlightedAddress } from '../store';
 import { AddressEntity } from '../entities';
-import { parsePartialAddress } from '../address';
+import { parsePartialAddress } from '../parse-partial-address';
 import { setAddress } from '../store/actions';
 
 export interface Props {
