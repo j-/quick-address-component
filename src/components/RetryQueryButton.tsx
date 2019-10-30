@@ -10,10 +10,10 @@ export interface Props extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 
 const RetryQueryButton: React.FC<Props> = ({ queryId, ...props }) => {
   const dispatch = useDispatch();
-  const queryEntity = useSelector<RootReducerState, QueryEntity>((state) => getQueryById(state, queryId));
+  const queryEntity = useSelector<RootReducerState, QueryEntity | null>((state) => getQueryById(state, queryId));
   const handleClick: React.MouseEventHandler = (e) => {
     e.preventDefault();
-    dispatch(query(queryEntity));
+    if (queryEntity) dispatch(query(queryEntity));
   };
   return (
     <button

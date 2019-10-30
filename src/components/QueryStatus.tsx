@@ -10,7 +10,8 @@ export interface Props {
 }
 
 const QueryStatus: React.FC<Props> = ({ queryId }) => {
-  const query = useSelector<RootReducerState, QueryEntity>((state) => getQueryById(state, queryId));
+  const query = useSelector<RootReducerState, QueryEntity | null>((state) => getQueryById(state, queryId));
+  if (!query) return null;
   return (
     <div className="QueryStatus mt-3 mb-3">
       {query.state === QueryState.FAILURE && <>Error: {query.error} <RetryQueryButton queryId={query.id} /></>}

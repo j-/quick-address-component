@@ -66,7 +66,7 @@ const reducer: Reducer<ReducerState> = (state = DEFAULT_STATE, action) => {
 
 export default reducer;
 
-export const getQueryById = (state: ReducerState, queryId: string): QueryEntity => (
+export const getQueryById = (state: ReducerState, queryId: string): QueryEntity | null => (
   state[queryId] || null
 );
 
