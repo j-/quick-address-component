@@ -86,7 +86,6 @@ export const getCurrentQueryResults = (state: RootReducerState) => {
   return getQueryResultsForQueryId(state, queryId);
 };
 
-
 export const getAddressByQueryResultId = (state: RootReducerState, queryResultId: string) => {
   const queryResult = getQueryResultById(state, queryResultId);
   if (!queryResult) return null;
