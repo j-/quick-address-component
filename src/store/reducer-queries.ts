@@ -5,24 +5,32 @@ import { normalizeQuery } from "../normalize-query";
 import { QueryState } from '../query-state';
 import { isActionQueryStart, isActionQuerySuccess, isActionQueryError, isActionSetAddressLine1 } from './actions';
 
-export type ReducerState = EntityMap<QueryEntity>
+export interface ReducerState {
+  entities: EntityMap<QueryEntity>
+}
 
-const DEFAULT_STATE: ReducerState = {};
+const DEFAULT_STATE: ReducerState = {
+  entities: {},
+};
 
 const reducer: Reducer<ReducerState> = (state = DEFAULT_STATE, action) => {
   if (isActionSetAddressLine1(action)) {
+    const { entities } = state;
     const term = action.data.addressLine1;
     const normalized = normalizeQuery(term);
     const id = normalized;
-    const query = state[id];
+    const query = entities[id];
     return {
       ...state,
-      [normalized]: {
-        id,
-        term,
-        normalized,
-        state: null,
-        ...query,
+      entities: {
+        ...entities,
+        [normalized]: {
+          id,
+          term,
+          normalized,
+          state: null,
+          ...query,
+        },
       },
     };
   }
@@ -31,9 +39,12 @@ const reducer: Reducer<ReducerState> = (state = DEFAULT_STATE, action) => {
     const { query } = action.data;
     return {
       ...state,
-      [query.id]: {
-        ...query,
-        state: QueryState.PENDING,
+      entities: {
+        ...state.entities,
+        [query.id]: {
+          ...query,
+          state: QueryState.PENDING,
+        },
       },
     };
   }
@@ -42,9 +53,12 @@ const reducer: Reducer<ReducerState> = (state = DEFAULT_STATE, action) => {
     const { query } = action.data;
     return {
       ...state,
-      [query.id]: {
-        ...query,
-        state: QueryState.SUCCESS,
+      entities: {
+        ...state.entities,
+        [query.id]: {
+          ...query,
+          state: QueryState.SUCCESS,
+        },
       },
     };
   }
@@ -53,10 +67,13 @@ const reducer: Reducer<ReducerState> = (state = DEFAULT_STATE, action) => {
     const { query, error } = action.data;
     return {
       ...state,
-      [query.id]: {
-        ...query,
-        state: QueryState.FAILURE,
-        error,
+      entities: {
+        ...state.entities,
+        [query.id]: {
+          ...query,
+          state: QueryState.FAILURE,
+          error,
+        },
       },
     };
   }
@@ -67,11 +84,11 @@ const reducer: Reducer<ReducerState> = (state = DEFAULT_STATE, action) => {
 export default reducer;
 
 export const getQueryById = (state: ReducerState, queryId: string): QueryEntity | null => (
-  state[queryId] || null
+  state.entities[queryId] || null
 );
 
 export const hasQueriedFor = (state: ReducerState, query: QueryEntity): boolean => (
-  state[query.id] !== undefined
+  state.entities[query.id] !== undefined
 );
 
 export const shouldQueryFor = (_state: ReducerState, query: QueryEntity): boolean => (
