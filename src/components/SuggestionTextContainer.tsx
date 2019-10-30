@@ -1,16 +1,17 @@
 import * as React from 'react';
 import { useSelector } from 'react-redux';
-import { getAddressByQueryResultId, RootReducerState, getQueryByQueryResultId } from '../store';
+import { getAddressById, RootReducerState, getQueryById } from '../store';
 import { AddressEntity, QueryEntity } from '../entities';
 import SuggestionText from './SuggestionText';
 
 export interface Props {
-  queryResultId: string;
+  addressId: string;
+  queryId: string;
 }
 
-const SuggestionTextContainer: React.FC<Props> = ({ queryResultId }) => {
-  const address = useSelector<RootReducerState, AddressEntity | null>((state) => getAddressByQueryResultId(state, queryResultId));
-  const query = useSelector<RootReducerState, QueryEntity | null>((state) => getQueryByQueryResultId(state, queryResultId));
+const SuggestionTextContainer: React.FC<Props> = ({ addressId, queryId }) => {
+  const address = useSelector<RootReducerState, AddressEntity | null>((state) => getAddressById(state, addressId));
+  const query = useSelector<RootReducerState, QueryEntity | null>((state) => getQueryById(state, queryId));
 
   if (!address || !query) return null;
 

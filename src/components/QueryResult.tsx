@@ -2,7 +2,7 @@ import * as React from 'react';
 import AddressSuggestion from './AddressSuggestion';
 import SuggestionTextContainer from './SuggestionTextContainer';
 import { useSelector, useDispatch } from 'react-redux';
-import { getAddressByQueryResultId, RootReducerState, getHighlightedAddress } from '../store';
+import { getAddressByQueryResultId, RootReducerState, getHighlightedAddress, getCurrentQuery } from '../store';
 import { AddressEntity } from '../entities';
 import { parsePartialAddress } from '../parse-partial-address';
 import { setAddress } from '../store/actions';
@@ -14,8 +14,9 @@ export interface Props {
 const QueryResult: React.FC<Props> = ({ queryResultId }) => {
   const dispatch = useDispatch();
   const address = useSelector<RootReducerState, AddressEntity | null>((state) => getAddressByQueryResultId(state, queryResultId));
+  const query = useSelector(getCurrentQuery);
   const highlightedAddress = useSelector(getHighlightedAddress);
-  if (!address) return null;
+  if (!address || !query) return null;
   const isHighlighted = highlightedAddress !== null && highlightedAddress.id === address.id;
   const handleClick: React.MouseEventHandler = (e) => {
     e.preventDefault();
@@ -27,7 +28,10 @@ const QueryResult: React.FC<Props> = ({ queryResultId }) => {
       isHighlighted={isHighlighted}
       onClick={handleClick}
     >
-      <SuggestionTextContainer queryResultId={queryResultId} />
+      <SuggestionTextContainer
+        addressId={address.id}
+        queryId={query.id}
+      />
     </AddressSuggestion>
   );
 };
