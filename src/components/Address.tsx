@@ -2,7 +2,6 @@ import * as React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useID } from '../use-id';
 import { useAddressField } from '../use-address-field';
-import QueryStatus from './QueryStatus';
 import QueryResults from './QueryResults';
 import FormGroupAddressLine2 from './FormGroupAddressLine2';
 import FormGroupSuburb from './FormGroupSuburb';
@@ -23,6 +22,8 @@ import {
   selectHighlightedAddress,
   setAddressLine1,
 } from '../store/actions';
+
+import './Address.css';
 
 export interface Props {
 
@@ -69,21 +70,24 @@ const Address: React.FC<Props> = () => {
   });
   return (
     <div className="Address">
-      <div className="Address-line-1-container form-group">
-        <label htmlFor={id('Address-line-1')}>Address line 1</label><br />
-        <input
-          id={id('Address-line-1')}
-          ref={addressLine1Ref}
-          className="form-control"
-          type="text"
-          autoComplete="address-line1"
-          value={addressLine1}
-          onChange={handleChangeAddressLine1}
-          onKeyDown={handleKeyDownAddressLine1}
-        />
+      <div className="Address-suggest-container">
+        <div className="Address-line-1-container form-group">
+          <label htmlFor={id('Address-line-1')}>Address line 1</label><br />
+          <input
+            id={id('Address-line-1')}
+            ref={addressLine1Ref}
+            className="form-control"
+            type="text"
+            autoComplete="address-line1"
+            value={addressLine1}
+            onChange={handleChangeAddressLine1}
+            onKeyDown={handleKeyDownAddressLine1}
+          />
+        </div>
+        <div className="Address-suggest-results ml-2 mr-2 mt-n1">
+          <QueryResults />
+        </div>
       </div>
-      {currentQuery && <QueryStatus queryId={currentQuery.id} />}
-      {currentQuery && <QueryResults />}
       <FormGroupAddressLine2 />
       <FormGroupSuburb />
       <FormGroupState />
