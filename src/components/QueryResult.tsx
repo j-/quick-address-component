@@ -15,8 +15,8 @@ const QueryResult: React.FC<Props> = ({ queryResultId }) => {
   const dispatch = useDispatch();
   const address = useSelector<RootReducerState, AddressEntity | null>((state) => getAddressByQueryResultId(state, queryResultId));
   const highlightedAddress = useSelector(getHighlightedAddress);
-  if (!address || !highlightedAddress) return null;
-  const isHighlighted = highlightedAddress.id === address.id;
+  if (!address) return null;
+  const isHighlighted = highlightedAddress !== null && highlightedAddress.id === address.id;
   const handleClick: React.MouseEventHandler = (e) => {
     e.preventDefault();
     const values = parsePartialAddress(address.partial);

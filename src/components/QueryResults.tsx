@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useSelector } from 'react-redux';
 import { MAX_SEARCH_RESULTS } from '../constants';
-import { getCurrentQueryResults, isResultsDismissed } from '../store';
+import { getLastResolvedQueryResults, isResultsDismissed } from '../store';
 import QueryResult from './QueryResult';
 import { QueryResultEntity } from '../entities';
 import ResultsContainer from './ResultsContainer';
@@ -11,7 +11,7 @@ export interface Props {
 }
 
 const QueryResults: React.FC = () => {
-  const queryResults = useSelector(getCurrentQueryResults);
+  const queryResults = useSelector(getLastResolvedQueryResults);
   const resultsDismissed = useSelector(isResultsDismissed);
 
   if (queryResults.length === 0 || resultsDismissed) {
