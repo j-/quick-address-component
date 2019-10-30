@@ -310,4 +310,8 @@ export const actionCreators = {
   setAddress,
   query,
   dismissResults,
+  setActiveAddressId,
+  incrementActiveResult,
+  decrementActiveResult,
+  selectHighlightedAddress,
 };
