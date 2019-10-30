@@ -1,8 +1,8 @@
 import { Action } from 'redux';
-import { QueryEntity, QueryResultEntity } from '../entities';
+import { QueryEntity } from '../entities';
 import { QASResultEntities, quickAddressSearch, getEntitiesFromQASResult, AddressSearchOptions, AddressSearchResults } from '../api';
 import { ThunkAction } from 'redux-thunk';
-import { RootReducerState, getCurrentQueryResults, getHighlightedAddress, getAddressBeforeHighlighted, getAddressAfterHighlighted } from '.';
+import { RootReducerState, getHighlightedAddress, getAddressBeforeHighlighted, getAddressAfterHighlighted } from '.';
 import { parsePartialAddress } from '../parse-partial-address';
 
 /* Address line 1 */
