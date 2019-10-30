@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { useSelector } from 'react-redux';
+import { MAX_SEARCH_RESULTS } from '../constants';
 import { getCurrentQueryResults, isResultsDismissed } from '../store';
 import QueryResult from './QueryResult';
 import { QueryResultEntity } from '../entities';
@@ -20,7 +21,7 @@ const QueryResults: React.FC = () => {
   return (
     <ResultsContainer>
       <div className="QueryResults list-group list-group-flush">
-        {queryResults.map((queryResult: QueryResultEntity) => (
+        {queryResults.slice(0, MAX_SEARCH_RESULTS).map((queryResult: QueryResultEntity) => (
           <QueryResult queryResultId={queryResult.id} key={queryResult.id} />
         ))}
       </div>
