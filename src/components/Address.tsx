@@ -2,11 +2,10 @@ import * as React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useID } from '../use-id';
 import { useAddressField } from '../use-address-field';
-import { getAddressLine1, getAddressLine2, getSuburb, getState, getPostcode, getCurrentQuery, getHighlightedAddress } from '../store';
-import { setAddressLine1, setAddressLine2, setSuburb, setState, setPostcode, dismissResults, setAddress, incrementActiveResult, decrementActiveResult } from '../store/actions';
+import { getAddressLine1, getAddressLine2, getSuburb, getState, getPostcode, getCurrentQuery } from '../store';
+import { setAddressLine1, setAddressLine2, setSuburb, setState, setPostcode, dismissResults, incrementActiveResult, decrementActiveResult, selectHighlightedAddress } from '../store/actions';
 import QueryStatus from './QueryStatus';
 import QueryResults from './QueryResults';
-import { parsePartialAddress } from '../parse-partial-address';
 
 export interface Props {
 
@@ -22,17 +21,13 @@ const Address: React.FC<Props> = () => {
   const [state, handleChangeState] = useAddressField(getState, setState);
   const [postcode, handleChangePostcode] = useAddressField(getPostcode, setPostcode);
   const currentQuery = useSelector(getCurrentQuery);
-  const highlightedAddress = useSelector(getHighlightedAddress);
   const handleKeyDownAddressLine1: React.KeyboardEventHandler = (e) => {
     if (e.key === 'Escape') {
       e.preventDefault();
       dispatch(dismissResults());
     } else if (e.key === 'Enter') {
       e.preventDefault();
-      if (!highlightedAddress) return;
-      const address = parsePartialAddress(highlightedAddress.partial);
-      if (!address) return;
-      dispatch(setAddress(address));
+      dispatch(selectHighlightedAddress());
     } else if (e.key === 'ArrowUp') {
       e.preventDefault();
       dispatch(decrementActiveResult());

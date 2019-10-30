@@ -3,6 +3,7 @@ import { QueryEntity, QueryResultEntity } from '../entities';
 import { QASResultEntities, quickAddressSearch, getEntitiesFromQASResult, AddressSearchOptions, AddressSearchResults } from '../api';
 import { ThunkAction } from 'redux-thunk';
 import { RootReducerState, getCurrentQueryResults, getHighlightedAddress } from '.';
+import { parsePartialAddress } from '../parse-partial-address';
 
 /* Address line 1 */
 
@@ -293,6 +294,17 @@ export const decrementActiveResult = (): ThunkAction<void, RootReducerState, voi
   const minIndex = 0;
   if (currentIndex <= minIndex) return;
   dispatch(setActiveAddressId(queryResults[currentIndex - 1].addressId));
+};
+
+/* Select highlighted address */
+
+export const selectHighlightedAddress = (): ThunkAction<void, RootReducerState, void, ActionSetAddress> => (dispatch, getState) => {
+  const state = getState();
+  const highlightedAddress = getHighlightedAddress(state);
+  if (!highlightedAddress) return;
+  const address = parsePartialAddress(highlightedAddress.partial);
+  if (!address) return;
+  dispatch(setAddress(address));
 };
 
 /* Action creators */
