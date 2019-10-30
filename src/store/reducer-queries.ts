@@ -1,7 +1,7 @@
 import { Reducer } from 'redux';
 import { EntityMap, QueryEntity } from '../entities';
 import { MIN_SEARCH_QUERY_LENGTH } from '../constants';
-import { normalizeQuery } from '../query';
+import { normalizeQuery } from "../normalize-query";
 import { QueryState } from '../query-state';
 import { isActionQueryStart, isActionQuerySuccess, isActionQueryError, isActionSetAddressLine1 } from './actions';
 
