@@ -1,7 +1,7 @@
 import { Middleware } from 'redux';
 import { buildQueryEntity } from '../query';
 import { INPUT_DEBOUNCE_MS } from '../constants';
-import { RootReducerState, getAddressQueryTerm, shouldQueryFor, getQueryById } from '.';
+import { RootReducerState, getAddressQueryTerm, shouldQueryFor, getQueryById, hasEnteredFullAddress } from '.';
 import { isActionSetAddressLine1, query } from './actions';
 
 const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -21,6 +21,14 @@ export const logicMiddleware: Middleware<void, RootReducerState> = ({ getState, 
 
   if (term !== action.data.addressLine1) {
     // Term has changed since debounce fired.
+    // Exit early.
+    return;
+  }
+
+  const isAddressComplete = hasEnteredFullAddress(getState());
+
+  if (isAddressComplete) {
+    // Full address has already been entered. No need to suggest.
     // Exit early.
     return;
   }

@@ -150,3 +150,16 @@ export const getAddressAfterHighlighted = (state: RootReducerState) => {
 export const hasAddressAfterHighlighted = (state: RootReducerState) => (
   getAddressAfterHighlighted(state) !== null
 );
+
+export const hasEnteredAddressLine1 = (state: RootReducerState) => getAddressLine1(state) !== '';
+export const hasEnteredAddressLine2 = (state: RootReducerState) => getAddressLine2(state) !== '';
+export const hasEnteredSuburb = (state: RootReducerState) => getSuburb(state) !== '';
+export const hasEnteredState = (state: RootReducerState) => getState(state) !== '';
+export const hasEnteredPostcode = (state: RootReducerState) => getPostcode(state) !== '';
+
+export const hasEnteredFullAddress = (state: RootReducerState) => (
+  hasEnteredAddressLine1(state) &&
+  hasEnteredSuburb(state) &&
+  hasEnteredState(state) &&
+  hasEnteredPostcode(state)
+);
