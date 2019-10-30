@@ -1,7 +1,7 @@
 import { Middleware } from 'redux';
 import { buildQueryEntity } from '../query';
 import { RootReducerState, getAddressQueryTerm, shouldQueryFor, getQueryById } from '.';
-import { isActionSetAddressLine1, query, dismissResults } from './actions';
+import { isActionSetAddressLine1, query } from './actions';
 
 const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
@@ -37,7 +37,6 @@ export const logicMiddleware: Middleware<void, RootReducerState> = ({ getState, 
 
   if (!shouldQuery) {
     // No need to query for this (term too short).
-    dispatch(dismissResults());
     return;
   }
 
