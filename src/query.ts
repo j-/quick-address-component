@@ -1,6 +1,7 @@
 import { QueryEntity } from './entities';
 
 export enum QueryState {
+  DEFAULT = 'DEFAULT',
   PENDING = 'PENDING',
   SUCCESS = 'SUCCESS',
   FAILURE = 'FAILURE',
@@ -25,7 +26,7 @@ export const buildQueryEntity = (term: string): QueryEntity => {
     id: normalized,
     term,
     normalized,
-    state: QueryState.PENDING,
+    state: QueryState.DEFAULT,
     error: null,
   };
 };
