@@ -6,10 +6,14 @@ import { QueryState } from '../query-state';
 import { isActionQueryStart, isActionQuerySuccess, isActionQueryError, isActionSetAddressLine1 } from './actions';
 
 export interface ReducerState {
-  entities: EntityMap<QueryEntity>
+  lastRequested: QueryEntity | null;
+  lastResolved: QueryEntity | null;
+  entities: EntityMap<QueryEntity>;
 }
 
 const DEFAULT_STATE: ReducerState = {
+  lastRequested: null,
+  lastResolved: null,
   entities: {},
 };
 
@@ -39,6 +43,8 @@ const reducer: Reducer<ReducerState> = (state = DEFAULT_STATE, action) => {
     const { query } = action.data;
     return {
       ...state,
+      lastRequested: query,
+      didLastRequestResolve: false,
       entities: {
         ...state.entities,
         [query.id]: {
@@ -51,8 +57,14 @@ const reducer: Reducer<ReducerState> = (state = DEFAULT_STATE, action) => {
 
   if (isActionQuerySuccess(action)) {
     const { query } = action.data;
+    const { lastRequested } = state;
+    let { lastResolved } = state;
+    if (lastRequested && lastRequested.id === query.id) {
+      lastResolved = query;
+    }
     return {
       ...state,
+      lastResolved,
       entities: {
         ...state.entities,
         [query.id]: {
@@ -93,4 +105,8 @@ export const hasQueriedFor = (state: ReducerState, query: QueryEntity): boolean 
 
 export const shouldQueryFor = (_state: ReducerState, query: QueryEntity): boolean => (
   query.normalized.length >= MIN_SEARCH_QUERY_LENGTH
+);
+
+export const getLastResolvedQuery = (state: ReducerState): QueryEntity | null => (
+  state.lastResolved
 );
