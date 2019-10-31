@@ -3,6 +3,7 @@ import { bindActionCreators } from 'redux';
 import { useSelector, useDispatch } from 'react-redux';
 import { useID } from '../use-id';
 import { useAddressField } from '../use-address-field';
+import { useWindowListener } from '../use-window-listener';
 import QueryResults from './QueryResults';
 import FormGroupAddressLine2 from './FormGroupAddressLine2';
 import FormGroupSuburb from './FormGroupSuburb';
@@ -67,38 +68,26 @@ const Address: React.FC<Props> = () => {
     if (addressLine1Ref.current) addressLine1Ref.current.focus();
   };
   // Handle pressing Esc
-  React.useEffect(() => {
-    const handler = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') dismissResults();
-    };
-    window.addEventListener('keydown', handler);
-    return () => window.removeEventListener('keydown', handler);
+  useWindowListener('keydown', (e) => {
+    if (e.key === 'Escape') dismissResults();
   });
   // Handle clicking off the component
-  React.useEffect(() => {
-    const handler = (e: MouseEvent) => {
-      const resultsEl = resultsRef.current;
-      const inputEl = addressLine1Ref.current;
-      const targetEl = e.target;
-      if (!resultsEl || !inputEl || !targetEl) return;
-      if (
-        // Clicked inside the address line 1 field
-        targetEl === inputEl ||
-        // Clicked the suggestions element or its children
-        resultsEl.contains(targetEl as Element)
-      ) {
-        dismissResults();
-      }
-    };
-    window.addEventListener('click', handler);
-    return () => window.removeEventListener('click', handler);
+  useWindowListener('click', (e) => {
+    const resultsEl = resultsRef.current;
+    const inputEl = addressLine1Ref.current;
+    const targetEl = e.target;
+    if (!resultsEl || !inputEl || !targetEl) return;
+    if (
+      // Clicked inside the address line 1 field
+      targetEl === inputEl ||
+      // Clicked the suggestions element or its children
+      resultsEl.contains(targetEl as Element)
+    ) {
+      dismissResults();
+    }
   });
   // Handle window losing focus
-  React.useEffect(() => {
-    const handler = () => dismissResults();
-    window.addEventListener('blur', handler);
-    return () => window.removeEventListener('blur', handler);
-  });
+  useWindowListener('blur', () => dismissResults());
   return (
     <div className="Address">
       <div className="Address-suggest-container">
