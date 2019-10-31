@@ -83,8 +83,9 @@ const Address: React.FC<Props> = () => {
       // Clicked the suggestions element or its children
       resultsEl.contains(targetEl as Element)
     ) {
-      dismissResults();
+      return;
     }
+    dismissResults();
   });
   // Handle window losing focus
   useWindowListener('blur', () => dismissResults());
