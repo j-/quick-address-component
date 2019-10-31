@@ -9,7 +9,7 @@ const FormGroupAddressLine2: React.FC = () => {
   const [value, handleChange] = useAddressField(getAddressLine2, setAddressLine2);
   return (
     <div className="FormGroupAddressLine2 form-group">
-      <label htmlFor={id('FormGroupAddressLine2')}>Address line 2</label><br />
+      <label htmlFor={id('FormGroupAddressLine2')}>Address line 2 (optional)</label><br />
       <input
         id={id('FormGroupAddressLine2')}
         className="form-control"
