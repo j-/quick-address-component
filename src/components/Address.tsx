@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { bindActionCreators } from 'redux';
 import { useSelector, useDispatch } from 'react-redux';
 import { useID } from '../use-id';
 import { useAddressField } from '../use-address-field';
@@ -8,16 +9,7 @@ import FormGroupSuburb from './FormGroupSuburb';
 import FormGroupState from './FormGroupState';
 import FormGroupPostcode from './FormGroupPostcode';
 import { getAddressLine1, isResultsDismissed } from '../store';
-
-import {
-  decrementActiveResult,
-  dismissResults,
-  incrementActiveResult,
-  recallResults,
-  selectHighlightedAddress,
-  setAddressLine1,
-} from '../store/actions';
-
+import { actionCreators, setAddressLine1 } from '../store/actions';
 import './Address.css';
 
 export interface Props {
@@ -29,33 +21,40 @@ const Address: React.FC<Props> = () => {
   const resultsRef = React.useRef<HTMLDivElement>(null);
   const id = useID();
   const dispatch = useDispatch();
+  const {
+    decrementActiveResult,
+    dismissResults,
+    incrementActiveResult,
+    recallResults,
+    selectHighlightedAddress,
+  } = bindActionCreators(actionCreators, dispatch);
   const [hasFocus, setHasFocus] = React.useState(false);
   const [addressLine1, handleChangeAddressLine1] = useAddressField(getAddressLine1, setAddressLine1);
   const isDismissed = useSelector(isResultsDismissed);
   const handleKeyDownAddressLine1: React.KeyboardEventHandler = (e) => {
     if (e.key === 'Tab') {
-      dispatch(dismissResults());
+      dismissResults();
     } else if (e.key === 'Enter') {
       e.preventDefault();
-      dispatch(selectHighlightedAddress());
+      selectHighlightedAddress();
     } else if (e.key === 'ArrowUp') {
       e.preventDefault();
       if (isDismissed) {
-        dispatch(recallResults());
+        recallResults();
       } else {
-        dispatch(decrementActiveResult());
+        decrementActiveResult();
       }
     } else if (e.key === 'ArrowDown') {
       e.preventDefault();
       if (isDismissed) {
-        dispatch(recallResults());
+        recallResults();
       } else {
-        dispatch(incrementActiveResult());
+        incrementActiveResult();
       }
     }
   };
   const handleMouseDownAddressLine1: React.MouseEventHandler = () => {
-    if (hasFocus) dispatch(recallResults());
+    if (hasFocus) recallResults();
   };
   const handleFocusAddressLine1: React.FocusEventHandler = () => {
     setHasFocus(true);
@@ -64,7 +63,7 @@ const Address: React.FC<Props> = () => {
     setHasFocus(false);
   };
   const handleClickDismiss = () => {
-    dispatch(dismissResults());
+    dismissResults();
     if (addressLine1Ref.current) addressLine1Ref.current.focus();
   };
   // Handle browser auto complete
@@ -85,7 +84,7 @@ const Address: React.FC<Props> = () => {
   // Handle pressing Esc
   React.useEffect(() => {
     const handler = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') dispatch(dismissResults());
+      if (e.key === 'Escape') dismissResults();
     };
     window.addEventListener('keydown', handler);
     return () => window.removeEventListener('keydown', handler);
@@ -98,14 +97,14 @@ const Address: React.FC<Props> = () => {
       const targetEl = e.target;
       if (!resultsEl || !inputEl || !targetEl) return;
       const contains = resultsEl.contains(targetEl as Element) || targetEl === inputEl;
-      if (!contains) dispatch(dismissResults());
+      if (!contains) dismissResults();
     };
     window.addEventListener('click', handler);
     return () => window.removeEventListener('click', handler);
   });
   // Handle window losing focus
   React.useEffect(() => {
-    const handler = () => dispatch(dismissResults());
+    const handler = () => dismissResults();
     window.addEventListener('blur', handler);
     return () => window.removeEventListener('blur', handler);
   });
