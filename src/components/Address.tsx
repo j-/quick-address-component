@@ -66,21 +66,6 @@ const Address: React.FC<Props> = () => {
     dismissResults();
     if (addressLine1Ref.current) addressLine1Ref.current.focus();
   };
-  // Handle browser auto complete
-  React.useEffect(() => {
-    const el = addressLine1Ref.current;
-    if (!el) return;
-    let autoFill = false;
-    const handler = (e: AnimationEvent) => {
-      const start = e.animationName === 'onAutoFillStart';
-      if (autoFill !== start) {
-        autoFill = start;
-        console.log('Auto fill?', autoFill);
-      }
-    };
-    el.addEventListener('animationstart', handler);
-    return () => el.removeEventListener('animationstart', handler);
-  });
   // Handle pressing Esc
   React.useEffect(() => {
     const handler = (e: KeyboardEvent) => {
