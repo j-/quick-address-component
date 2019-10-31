@@ -81,8 +81,14 @@ const Address: React.FC<Props> = () => {
       const inputEl = addressLine1Ref.current;
       const targetEl = e.target;
       if (!resultsEl || !inputEl || !targetEl) return;
-      const contains = resultsEl.contains(targetEl as Element) || targetEl === inputEl;
-      if (!contains) dismissResults();
+      if (
+        // Clicked inside the address line 1 field
+        targetEl === inputEl ||
+        // Clicked the suggestions element or its children
+        resultsEl.contains(targetEl as Element)
+      ) {
+        dismissResults();
+      }
     };
     window.addEventListener('click', handler);
     return () => window.removeEventListener('click', handler);
