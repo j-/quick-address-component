@@ -1,13 +1,13 @@
 import * as React from 'react';
-import { useDispatch } from 'react-redux';
-import { dismissResults } from '../store/actions';
 
-const ResultsContainer: React.FC = ({ children }) => {
-  const dispatch = useDispatch();
+export interface Props {
+  onClickDismiss?: () => void;
+}
 
+const ResultsContainer: React.FC<Props> = ({ onClickDismiss, children }) => {
   const handleClickDismiss: React.MouseEventHandler = (e) => {
     e.preventDefault();
-    dispatch(dismissResults());
+    if (onClickDismiss) onClickDismiss();
   };
 
   return (

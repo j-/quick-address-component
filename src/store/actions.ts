@@ -2,7 +2,7 @@ import { Action } from 'redux';
 import { QueryEntity } from '../entities';
 import { QASResultEntities, quickAddressSearch, getEntitiesFromQASResult, AddressSearchOptions, AddressSearchResults } from '../api';
 import { ThunkAction } from 'redux-thunk';
-import { RootReducerState, getHighlightedAddress, getAddressBeforeHighlighted, getAddressAfterHighlighted } from '.';
+import { RootReducerState, getHighlightedAddress, getAddressBeforeHighlighted, getAddressAfterHighlighted, isResultsDismissed } from '.';
 import { parsePartialAddress } from '../parse-partial-address';
 
 /* Address line 1 */
@@ -249,9 +249,25 @@ export const isActionDismissResults = (action: Action): action is ActionDismissR
   action.type === ACTION_DISMISS_RESULTS
 );
 
-export const dismissResults = (): ActionDismissResults => ({
-  type: ACTION_DISMISS_RESULTS,
-});
+export const dismissResults = (): ThunkAction<void, RootReducerState, void, ActionDismissResults> => (dispatch, getState) => {
+  if (isResultsDismissed(getState())) return;
+  dispatch({ type: ACTION_DISMISS_RESULTS });
+};
+
+/* Recall results */
+
+export const ACTION_RECALL_RESULTS = 'RECALL_RESULTS';
+
+export interface ActionRecallResults extends Action<typeof ACTION_RECALL_RESULTS> {}
+
+export const isActionRecallResults = (action: Action): action is ActionRecallResults => (
+  action.type === ACTION_RECALL_RESULTS
+);
+
+export const recallResults = (): ThunkAction<void, RootReducerState, void, ActionRecallResults> => (dispatch, getState) => {
+  if (!isResultsDismissed(getState())) return;
+  dispatch({ type: ACTION_RECALL_RESULTS });
+};
 
 /* Set active query result */
 
@@ -310,6 +326,7 @@ export const actionCreators = {
   setAddress,
   query,
   dismissResults,
+  recallResults,
   setActiveAddressId,
   incrementActiveResult,
   decrementActiveResult,

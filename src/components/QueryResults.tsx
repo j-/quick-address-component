@@ -7,10 +7,10 @@ import { QueryResultEntity } from '../entities';
 import ResultsContainer from './ResultsContainer';
 
 export interface Props {
-
+  onClickDismiss?: () => void;
 }
 
-const QueryResults: React.FC = () => {
+const QueryResults: React.FC<Props> = ({ onClickDismiss }) => {
   const queryResults = useSelector(getLastResolvedQueryResults);
   const resultsDismissed = useSelector(isResultsDismissed);
 
@@ -19,7 +19,7 @@ const QueryResults: React.FC = () => {
   }
 
   return (
-    <ResultsContainer>
+    <ResultsContainer onClickDismiss={onClickDismiss}>
       <div className="QueryResults list-group list-group-flush">
         {queryResults.slice(0, MAX_SEARCH_RESULTS).map((queryResult: QueryResultEntity) => (
           <QueryResult queryResultId={queryResult.id} key={queryResult.id} />

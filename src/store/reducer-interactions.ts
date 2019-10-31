@@ -1,5 +1,5 @@
 import { Reducer } from 'redux';
-import { isActionDismissResults, isActionQuerySuccess, isActionSetAddress } from './actions';
+import { isActionDismissResults, isActionQuerySuccess, isActionSetAddress, isActionRecallResults } from './actions';
 
 export interface ReducerState {
   dismissResults: boolean;
@@ -17,7 +17,7 @@ const reducer: Reducer<ReducerState> = (state = DEFAULT_STATE, action) => {
     };
   }
 
-  if (isActionQuerySuccess(action)) {
+  if (isActionRecallResults(action) || isActionQuerySuccess(action)) {
     return {
       ...state,
       dismissResults: false,
