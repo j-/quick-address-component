@@ -1,9 +1,9 @@
 import { Reducer } from 'redux';
 import { EntityMap, QueryEntity } from '../entities';
-import { MIN_SEARCH_QUERY_LENGTH } from '../constants';
 import { normalizeQuery } from "../normalize-query";
 import { QueryState } from '../query-state';
 import { isActionQueryStart, isActionQuerySuccess, isActionQueryError, isActionSetAddressLine1 } from './actions';
+import { shouldQuery } from '../should-query';
 
 export interface ReducerState {
   lastRequested: QueryEntity | null;
@@ -104,7 +104,7 @@ export const hasQueriedFor = (state: ReducerState, query: QueryEntity): boolean 
 );
 
 export const shouldQueryFor = (_state: ReducerState, query: QueryEntity): boolean => (
-  query.normalized.length >= MIN_SEARCH_QUERY_LENGTH
+  shouldQuery(query.normalized)
 );
 
 export const getLastResolvedQuery = (state: ReducerState): QueryEntity | null => (
