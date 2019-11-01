@@ -85,8 +85,8 @@ export const shouldQueryFor = (_state: ReducerState, query: QueryEntity): boolea
   shouldQuery(query.normalized)
 );
 
-export const getLastResolvedQuery = (state: ReducerState): QueryEntity | null => {
-  return state.history
+export const getLastResolvedQuery = (state: ReducerState): QueryEntity | null => (
+  state.history
     .map((id) => state.entities[id])
-    .find((query) => query.state === QueryState.SUCCESS) || null;
-};
+    .find((query) => query.state === QueryState.SUCCESS) || null
+);
