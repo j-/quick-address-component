@@ -4,6 +4,8 @@ import { QASResultEntities, quickAddressSearch, getEntitiesFromQASResult, Addres
 import { ThunkAction } from 'redux-thunk';
 import { RootReducerState, getHighlightedAddress, getAddressBeforeHighlighted, getAddressAfterHighlighted, isResultsDismissed } from '.';
 import { parsePartialAddress } from '../parse-partial-address';
+import { getQueryById } from '.';
+import { QueryState } from '../query-state';
 
 /* Address line 1 */
 
@@ -165,13 +167,17 @@ export const isActionQueryStart = (action: Action): action is ActionQueryStart =
   action.type === ACTION_QUERY_START
 );
 
-export const query = (entity: QueryEntity, options?: AddressSearchOptions): ThunkAction<void, RootReducerState, void, ActionQueryStart | ActionQuerySuccess | ActionQueryError> => async (dispatch) => {
+export const query = (entity: QueryEntity, options?: AddressSearchOptions): ThunkAction<void, RootReducerState, void, ActionQueryStart | ActionQuerySuccess | ActionQueryError> => async (dispatch, getState) => {
   dispatch<ActionQueryStart>({
     type: ACTION_QUERY_START,
     data: {
       query: entity,
     },
   });
+
+  const storeQuery = getQueryById(getState(), entity.id);
+  if (storeQuery && storeQuery.state === QueryState.SUCCESS) return;
+
   let qasResult: AddressSearchResults;
   let entities: QASResultEntities;
   // Try and make a request to the QAS endpoint

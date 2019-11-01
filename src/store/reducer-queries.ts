@@ -1,55 +1,35 @@
 import { Reducer } from 'redux';
-import { EntityMap, QueryEntity } from '../entities';
-import { normalizeQuery } from "../normalize-query";
+import { EntityMap, QueryEntity, Results } from '../entities';
 import { QueryState } from '../query-state';
-import { isActionQueryStart, isActionQuerySuccess, isActionQueryError, isActionSetAddressLine1 } from './actions';
+import { isActionQueryStart, isActionQuerySuccess, isActionQueryError } from './actions';
 import { shouldQuery } from '../should-query';
 
 export interface ReducerState {
-  lastRequested: QueryEntity | null;
-  lastResolved: QueryEntity | null;
+  history: Results<QueryEntity>;
   entities: EntityMap<QueryEntity>;
 }
 
 const DEFAULT_STATE: ReducerState = {
-  lastRequested: null,
-  lastResolved: null,
+  history: [],
   entities: {},
 };
 
 const reducer: Reducer<ReducerState> = (state = DEFAULT_STATE, action) => {
-  if (isActionSetAddressLine1(action)) {
-    const { entities } = state;
-    const term = action.data.addressLine1;
-    const normalized = normalizeQuery(term);
-    const id = normalized;
-    const query = entities[id];
-    return {
-      ...state,
-      entities: {
-        ...entities,
-        [normalized]: {
-          id,
-          term,
-          normalized,
-          state: null,
-          ...query,
-        },
-      },
-    };
-  }
-
   if (isActionQueryStart(action)) {
+    const { history } = state;
     const { query } = action.data;
+    const { id } = query;
     return {
       ...state,
-      lastRequested: query,
-      didLastRequestResolve: false,
+      history: [
+        ...history,
+        id,
+      ],
       entities: {
         ...state.entities,
-        [query.id]: {
-          ...query,
+        [id]: {
           state: QueryState.PENDING,
+          ...query,
         },
       },
     };
@@ -57,17 +37,12 @@ const reducer: Reducer<ReducerState> = (state = DEFAULT_STATE, action) => {
 
   if (isActionQuerySuccess(action)) {
     const { query } = action.data;
-    const { lastRequested } = state;
-    let { lastResolved } = state;
-    if (lastRequested && lastRequested.id === query.id) {
-      lastResolved = query;
-    }
+    const { id } = query;
     return {
       ...state,
-      lastResolved,
       entities: {
         ...state.entities,
-        [query.id]: {
+        [id]: {
           ...query,
           state: QueryState.SUCCESS,
         },
@@ -77,11 +52,12 @@ const reducer: Reducer<ReducerState> = (state = DEFAULT_STATE, action) => {
 
   if (isActionQueryError(action)) {
     const { query, error } = action.data;
+    const { id } = query;
     return {
       ...state,
       entities: {
         ...state.entities,
-        [query.id]: {
+        [id]: {
           ...query,
           state: QueryState.FAILURE,
           error,
@@ -107,6 +83,9 @@ export const shouldQueryFor = (_state: ReducerState, query: QueryEntity): boolea
   shouldQuery(query.normalized)
 );
 
-export const getLastResolvedQuery = (state: ReducerState): QueryEntity | null => (
-  state.lastResolved
-);
+export const getLastResolvedQuery = (state: ReducerState): QueryEntity | null => {
+  return state.history
+    .map((id) => state.entities[id])
+    .reverse()
+    .find((query) => query.state === QueryState.SUCCESS) || null;
+};
