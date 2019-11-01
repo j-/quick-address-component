@@ -13,5 +13,11 @@ $ npm install
 $ npm start
 ```
 
+Glossary
+--------
+
+There is a full [Glossary of terms][glossary] on the project wiki.
+
 
 [service]: https://github.service.anz/hoeksj/quick-address-service/
+[glossary]: https://github.service.anz/hoeksj/quick-address-component/wiki/Glossary
