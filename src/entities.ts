@@ -1,10 +1,16 @@
 import { QueryState } from './query-state';
 
-export interface EntityMap<T> {
+export interface Entity {
+  id: string;
+}
+
+export interface EntityMap<T extends Entity> {
   [entityId: string]: T;
 }
 
-export interface QueryEntity {
+export interface Results<T extends Entity> extends Array<T['id']> {}
+
+export interface QueryEntity extends Entity {
   /** Normalized query string */
   id: string;
   /** Full query string */
@@ -21,7 +27,7 @@ export type HasQueryEntities = {
   queries: EntityMap<QueryEntity>;
 }
 
-export interface AddressEntity {
+export interface AddressEntity extends Entity {
   /** Long identifier for this address */
   id: string;
   /** Display text for this address */
@@ -34,7 +40,7 @@ export type HasAddressEntities = {
   addresses: EntityMap<AddressEntity>;
 }
 
-export interface QueryResultEntity {
+export interface QueryResultEntity extends Entity {
   /** Concatenate query and address ID */
   id: string;
   /** Query identifier */
