@@ -3,6 +3,7 @@ import { EntityMap, QueryEntity, Results } from '../entities';
 import { QueryState } from '../query-state';
 import { isActionQueryStart, isActionQuerySuccess, isActionQueryError } from './actions';
 import { shouldQuery } from '../should-query';
+import { squashHistory } from '../squash-history';
 
 export interface ReducerState {
   history: Results<QueryEntity>;
@@ -16,55 +17,61 @@ const DEFAULT_STATE: ReducerState = {
 
 const reducer: Reducer<ReducerState> = (state = DEFAULT_STATE, action) => {
   if (isActionQueryStart(action)) {
-    const { history, entities } = state;
+    let { history, entities } = state;
     const { query } = action.data;
     const { id } = query;
+    entities = {
+      ...entities,
+      [id]: {
+        state: QueryState.PENDING,
+        ...query,
+      },
+    };
+    history = [ id, ...history ];
+    history = squashHistory(history, entities);
     return {
       ...state,
-      history: [
-        id,
-        ...history,
-      ],
-      entities: {
-        ...entities,
-        [id]: {
-          state: QueryState.PENDING,
-          ...query,
-        },
-      },
+      history,
+      entities,
     };
   }
 
   if (isActionQuerySuccess(action)) {
-    const { entities } = state;
+    let { history, entities } = state;
     const { query } = action.data;
     const { id } = query;
+    entities = {
+      ...entities,
+      [id]: {
+        ...query,
+        state: QueryState.SUCCESS,
+      },
+    };
+    history = squashHistory(history, entities);
     return {
       ...state,
-      entities: {
-        ...entities,
-        [id]: {
-          ...query,
-          state: QueryState.SUCCESS,
-        },
-      },
+      history,
+      entities,
     };
   }
 
   if (isActionQueryError(action)) {
-    const { entities } = state;
+    let { history, entities } = state;
     const { query, error } = action.data;
     const { id } = query;
+    entities = {
+      ...entities,
+      [id]: {
+        ...query,
+        state: QueryState.FAILURE,
+        error,
+      },
+    };
+    history = squashHistory(history, entities);
     return {
       ...state,
-      entities: {
-        ...entities,
-        [id]: {
-          ...query,
-          state: QueryState.FAILURE,
-          error,
-        },
-      },
+      history,
+      entities,
     };
   }
 
