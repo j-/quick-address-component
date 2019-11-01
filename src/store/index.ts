@@ -84,12 +84,6 @@ export const getCurrentQuery = (state: RootReducerState) => {
   return getQueryById(state, queryId);
 };
 
-export const getCurrentQueryResults = (state: RootReducerState) => {
-  const queryId = getCurrentQueryId(state);
-  if (!queryId) return [];
-  return getQueryResultsForQueryId(state, queryId);
-};
-
 export const getLastResolvedQueryResults = (state: RootReducerState) => {
   const query = getLastResolvedQuery(state);
   if (!query) return [];
@@ -102,14 +96,6 @@ export const getAddressByQueryResultId = (state: RootReducerState, queryResultId
   const address = getAddressById(state, queryResult.addressId);
   if (!address) return null;
   return address;
-};
-
-export const getQueryByQueryResultId = (state: RootReducerState, queryResultId: string) => {
-  const queryResult = getQueryResultById(state, queryResultId);
-  if (!queryResult) return null;
-  const query = getQueryById(state, queryResult.queryId);
-  if (!query) return null;
-  return query;
 };
 
 export const getFirstCurrentQueryResult = (state: RootReducerState) => (
@@ -142,10 +128,6 @@ export const getAddressBeforeHighlighted = (state: RootReducerState) => {
   return getAddressByQueryResultId(state, queryResult.id);
 };
 
-export const hasAddressBeforeHighlighted = (state: RootReducerState) => (
-  getAddressBeforeHighlighted(state) !== null
-);
-
 export const getAddressAfterHighlighted = (state: RootReducerState) => {
   const currentAddress = getHighlightedAddress(state);
   if (!currentAddress) return null;
@@ -157,19 +139,9 @@ export const getAddressAfterHighlighted = (state: RootReducerState) => {
   return getAddressByQueryResultId(state, queryResult.id);
 };
 
-export const hasAddressAfterHighlighted = (state: RootReducerState) => (
-  getAddressAfterHighlighted(state) !== null
-);
-
-export const hasEnteredAddressLine1 = (state: RootReducerState) => getAddressLine1(state) !== '';
-export const hasEnteredAddressLine2 = (state: RootReducerState) => getAddressLine2(state) !== '';
-export const hasEnteredSuburb = (state: RootReducerState) => getSuburb(state) !== '';
-export const hasEnteredState = (state: RootReducerState) => getState(state) !== '';
-export const hasEnteredPostcode = (state: RootReducerState) => getPostcode(state) !== '';
-
 export const hasEnteredFullAddress = (state: RootReducerState) => (
-  hasEnteredAddressLine1(state) &&
-  hasEnteredSuburb(state) &&
-  hasEnteredState(state) &&
-  hasEnteredPostcode(state)
+  getAddressLine1(state) !== '' &&
+  getSuburb(state) !== '' &&
+  getState(state) !== '' &&
+  getPostcode(state) !== ''
 );
