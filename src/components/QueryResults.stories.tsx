@@ -6,6 +6,7 @@ import * as actions from '../store/actions';
 import { QueryEntity, EntityMap, AddressEntity, QueryResultEntity } from '../entities';
 import { Provider as StoreProvider } from 'react-redux';
 import { text } from '@storybook/addon-knobs';
+import { QueryState } from '../query-state';
 
 const a1: AddressEntity = {
   id: 'a1',
@@ -83,7 +84,7 @@ storiesOf('QueryResults', module)
       id: 'q1',
       term: text('query', '833 collins st'),
       normalized: text('query', '833 collins st'),
-      state: null,
+      state: QueryState.SUCCESS,
       error: null,
     };
 
@@ -129,7 +130,7 @@ storiesOf('QueryResults', module)
       id: 'q1',
       term: text('query', '833 collins st'),
       normalized: text('query', '833 collins st'),
-      state: null,
+      state: QueryState.SUCCESS,
       error: null,
     };
 

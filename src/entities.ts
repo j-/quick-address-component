@@ -18,7 +18,7 @@ export interface QueryEntity extends Entity {
   /** Normalized query string */
   normalized: string;
   /** Status of this query */
-  state: QueryState | null;
+  state: QueryState;
   /** Error message when something goes bad */
   error: string | null;
 }
