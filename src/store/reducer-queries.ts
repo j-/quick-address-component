@@ -16,7 +16,7 @@ const DEFAULT_STATE: ReducerState = {
 
 const reducer: Reducer<ReducerState> = (state = DEFAULT_STATE, action) => {
   if (isActionQueryStart(action)) {
-    const { history } = state;
+    const { history, entities } = state;
     const { query } = action.data;
     const { id } = query;
     return {
@@ -26,7 +26,7 @@ const reducer: Reducer<ReducerState> = (state = DEFAULT_STATE, action) => {
         id,
       ],
       entities: {
-        ...state.entities,
+        ...entities,
         [id]: {
           state: QueryState.PENDING,
           ...query,
@@ -36,12 +36,13 @@ const reducer: Reducer<ReducerState> = (state = DEFAULT_STATE, action) => {
   }
 
   if (isActionQuerySuccess(action)) {
+    const { entities } = state;
     const { query } = action.data;
     const { id } = query;
     return {
       ...state,
       entities: {
-        ...state.entities,
+        ...entities,
         [id]: {
           ...query,
           state: QueryState.SUCCESS,
@@ -51,12 +52,13 @@ const reducer: Reducer<ReducerState> = (state = DEFAULT_STATE, action) => {
   }
 
   if (isActionQueryError(action)) {
+    const { entities } = state;
     const { query, error } = action.data;
     const { id } = query;
     return {
       ...state,
       entities: {
-        ...state.entities,
+        ...entities,
         [id]: {
           ...query,
           state: QueryState.FAILURE,
