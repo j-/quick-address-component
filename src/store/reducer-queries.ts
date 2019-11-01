@@ -22,8 +22,8 @@ const reducer: Reducer<ReducerState> = (state = DEFAULT_STATE, action) => {
     return {
       ...state,
       history: [
-        ...history,
         id,
+        ...history,
       ],
       entities: {
         ...entities,
@@ -88,6 +88,5 @@ export const shouldQueryFor = (_state: ReducerState, query: QueryEntity): boolea
 export const getLastResolvedQuery = (state: ReducerState): QueryEntity | null => {
   return state.history
     .map((id) => state.entities[id])
-    .reverse()
     .find((query) => query.state === QueryState.SUCCESS) || null;
 };
