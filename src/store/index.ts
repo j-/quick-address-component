@@ -7,6 +7,7 @@ import * as queries from './reducer-queries';
 import * as queryResults from './reducer-query-results';
 import { normalizeQuery } from '../normalize-query';
 import { shouldQuery } from '../should-query';
+import { buildQueryEntity } from '../query';
 
 export interface RootReducerState {
   addresses: addresses.ReducerState;
@@ -82,7 +83,7 @@ export const getAddressQueryTerm = (state: RootReducerState) => getAddressLine1(
 export const getEnteredQuery = (state: RootReducerState) => {
   const term = getAddressQueryTerm(state);
   const queryId = normalizeQuery(term);
-  return getQueryById(state, queryId);
+  return getQueryById(state, queryId) || buildQueryEntity(term);
 };
 
 export const isEnteredQuerySignificant = (state: RootReducerState) => {
