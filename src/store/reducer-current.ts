@@ -1,5 +1,5 @@
 import { Reducer } from 'redux';
-import { isActionSetAddressLine1, isActionSetAddressLine2, isActionSetSuburb, isActionSetState, isActionSetPostcode, isActionQueryStart, isActionSetAddress, isActionSetActiveAddressId } from './actions';
+import { isActionSetAddressLine1, isActionSetAddressLine2, isActionSetSuburb, isActionSetState, isActionSetPostcode, isActionSetAddress, isActionSetActiveAddressId } from './actions';
 
 export interface ReducerState {
   addressLine1: string;
@@ -7,7 +7,6 @@ export interface ReducerState {
   suburb: string;
   state: string;
   postcode: string;
-  queryId: string | null;
   activeAddressId: string | null;
 }
 
@@ -17,7 +16,6 @@ const DEFAULT_STATE: ReducerState = {
   suburb: '',
   state: '',
   postcode: '',
-  queryId: null,
   activeAddressId: null,
 }
 
@@ -57,13 +55,6 @@ const reducer: Reducer<ReducerState> = (state = DEFAULT_STATE, action) => {
     };
   }
 
-  if (isActionQueryStart(action)) {
-    return {
-      ...state,
-      queryId: action.data.query.id,
-    };
-  }
-
   if (isActionSetAddress(action)) {
     return {
       ...state,
@@ -92,5 +83,4 @@ export const getAddressLine2 = (state: ReducerState) => state.addressLine2;
 export const getSuburb = (state: ReducerState) => state.suburb;
 export const getState = (state: ReducerState) => state.state;
 export const getPostcode = (state: ReducerState) => state.postcode;
-export const getCurrentQueryId = (state: ReducerState) => state.queryId;
 export const getActiveAddressId = (state: ReducerState) => state.activeAddressId;

@@ -5,6 +5,8 @@ import * as current from './reducer-current';
 import * as interactions from './reducer-interactions';
 import * as queries from './reducer-queries';
 import * as queryResults from './reducer-query-results';
+import { normalizeQuery } from '../normalize-query';
+import { shouldQuery } from '../should-query';
 
 export interface RootReducerState {
   addresses: addresses.ReducerState;
@@ -35,7 +37,6 @@ export const getAddressLine2 = (state: RootReducerState) => current.getAddressLi
 export const getSuburb = (state: RootReducerState) => current.getSuburb(state.current);
 export const getState = (state: RootReducerState) => current.getState(state.current);
 export const getPostcode = (state: RootReducerState) => current.getPostcode(state.current);
-export const getCurrentQueryId = (state: RootReducerState) => current.getCurrentQueryId(state.current);
 export const getActiveAddressId = (state: RootReducerState) => current.getActiveAddressId(state.current);
 
 /* Interaction selectors */
@@ -78,10 +79,15 @@ export const hasQueryResultsForQueryId = (state: RootReducerState, queryId: stri
 
 export const getAddressQueryTerm = (state: RootReducerState) => getAddressLine1(state);
 
-export const getCurrentQuery = (state: RootReducerState) => {
-  const queryId = getCurrentQueryId(state);
-  if (!queryId) return null;
+export const getEnteredQuery = (state: RootReducerState) => {
+  const term = getAddressQueryTerm(state);
+  const queryId = normalizeQuery(term);
   return getQueryById(state, queryId);
+};
+
+export const isEnteredQuerySignificant = (state: RootReducerState) => {
+  const term = getAddressQueryTerm(state);
+  return shouldQuery(term);
 };
 
 export const getLastResolvedQueryResults = (state: RootReducerState) => {
