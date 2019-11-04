@@ -1,15 +1,28 @@
 import { QueryState } from './query-state';
 
+/**
+ * Represents an entity in the data model. All entities must refer to each
+ * other by ID only.
+ */
 export interface Entity {
   id: string;
 }
 
-export interface EntityMap<T extends Entity> {
+/**
+ * An object indexed by entity ID where each value is an object of that entity.
+ */
+export interface EntityMap<T extends Entity = Entity> {
   [entityId: string]: T;
 }
 
-export interface Results<T extends Entity> extends Array<T['id']> {}
+/**
+ * Array of entity IDs.
+ */
+export interface Results<T extends Entity = Entity> extends Array<T['id']> {}
 
+/**
+ * Queries are what the user types in.
+ */
 export interface QueryEntity extends Entity {
   /** Normalized query string */
   id: string;
@@ -27,6 +40,9 @@ export type HasQueryEntities = {
   queries: EntityMap<QueryEntity>;
 }
 
+/**
+ * Addresses map to physical locations.
+ */
 export interface AddressEntity extends Entity {
   /** Long identifier for this address */
   id: string;
@@ -40,6 +56,10 @@ export type HasAddressEntities = {
   addresses: EntityMap<AddressEntity>;
 }
 
+/**
+ * Query results map queries to addresses. They include a `score` which
+ * indicates how closely the result matches the query.
+ */
 export interface QueryResultEntity extends Entity {
   /** Concatenate query and address ID */
   id: string;
