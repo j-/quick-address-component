@@ -151,3 +151,12 @@ export const hasEnteredFullAddress = (state: RootReducerState) => (
   getState(state) !== '' &&
   getPostcode(state) !== ''
 );
+
+export const shouldShowSuggestions = (state: RootReducerState) => (
+  // User has typed in something meaningful
+  isEnteredQuerySignificant(state) &&
+  // Must be something to show
+  getLastResolvedQueryResults(state).length > 0 &&
+  // User has not dismissed the results
+  !isResultsDismissed(state)
+);

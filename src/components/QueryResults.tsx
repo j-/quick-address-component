@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useSelector } from 'react-redux';
 import { MAX_SEARCH_RESULTS } from '../constants';
-import { getLastResolvedQueryResults, isResultsDismissed, isEnteredQuerySignificant } from '../store';
+import { getLastResolvedQueryResults } from '../store';
 import QueryResult from './QueryResult';
 import ResultsContainer from './ResultsContainer';
 
@@ -11,13 +11,6 @@ export interface Props {
 
 const QueryResults: React.FC<Props> = ({ onClickDismiss }) => {
   const queryResults = useSelector(getLastResolvedQueryResults);
-  const resultsDismissed = useSelector(isResultsDismissed);
-  const isSignificant = useSelector(isEnteredQuerySignificant);
-
-  if (queryResults.length === 0 || resultsDismissed || !isSignificant) {
-    return null;
-  }
-
   return (
     <ResultsContainer onClickDismiss={onClickDismiss}>
       <div className="QueryResults list-group list-group-flush">

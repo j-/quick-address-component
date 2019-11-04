@@ -9,7 +9,7 @@ import FormGroupAddressLine2 from './FormGroupAddressLine2';
 import FormGroupSuburb from './FormGroupSuburb';
 import FormGroupState from './FormGroupState';
 import FormGroupPostcode from './FormGroupPostcode';
-import { getAddressLine1, isResultsDismissed } from '../store';
+import { getAddressLine1, isResultsDismissed, shouldShowSuggestions } from '../store';
 import { actionCreators, setAddressLine1 } from '../store/actions';
 import './Address.css';
 
@@ -32,6 +32,7 @@ const Address: React.FC<Props> = () => {
   const [hasFocus, setHasFocus] = React.useState(false);
   const [addressLine1, handleChangeAddressLine1] = useAddressField(getAddressLine1, setAddressLine1);
   const isDismissed = useSelector(isResultsDismissed);
+  const showSuggestions = useSelector(shouldShowSuggestions);
   const handleKeyDownAddressLine1: React.KeyboardEventHandler = (e) => {
     if (e.key === 'Tab') {
       dismissResults();
@@ -108,9 +109,11 @@ const Address: React.FC<Props> = () => {
             onBlur={handleBlurAddressLine1}
           />
         </div>
-        <div className="Address-suggest-results ml-2 mr-2 mt-n1" ref={resultsRef}>
-          <QueryResults onClickDismiss={handleClickDismiss} />
-        </div>
+        {showSuggestions && (
+          <div className="Address-suggest-results ml-2 mr-2 mt-n1" ref={resultsRef}>
+            <QueryResults onClickDismiss={handleClickDismiss} />
+          </div>
+        )}
       </div>
       <FormGroupAddressLine2 />
       <FormGroupSuburb />
