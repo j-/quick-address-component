@@ -1,11 +1,11 @@
 import * as React from 'react';
 import AddressSuggestion from './AddressSuggestion';
-import SuggestionTextContainer from './SuggestionTextContainer';
 import { useSelector, useDispatch } from 'react-redux';
 import { getAddressByQueryResultId, RootReducerState, getHighlightedAddress, getEnteredQuery } from '../store';
 import { AddressEntity } from '../entities';
 import { parsePartialAddress } from '../parse-partial-address';
 import { setAddress } from '../store/actions';
+import SuggestionText from './SuggestionText';
 
 export interface Props {
   queryResultId: string;
@@ -28,10 +28,7 @@ const QueryResult: React.FC<Props> = ({ queryResultId }) => {
       isHighlighted={isHighlighted}
       onClick={handleClick}
     >
-      <SuggestionTextContainer
-        addressId={address.id}
-        queryId={query.id}
-      />
+      <SuggestionText queryTerm={query.term} addressLabel={address.label} />
     </AddressSuggestion>
   );
 };
