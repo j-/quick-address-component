@@ -3,8 +3,7 @@ import AddressSuggestion from './AddressSuggestion';
 import { useSelector, useDispatch } from 'react-redux';
 import { getAddressByQueryResultId, RootReducerState, getHighlightedAddress, getEnteredQuery } from '../store';
 import { AddressEntity } from '../entities';
-import { parsePartialAddress } from '../parse-partial-address';
-import { setAddress } from '../store/actions';
+import { selectAddressId } from '../store/actions';
 import SuggestionText from './SuggestionText';
 
 export interface Props {
@@ -20,14 +19,10 @@ const QueryResult: React.FC<Props> = ({ queryResultId }) => {
   const isHighlighted = highlightedAddress !== null && highlightedAddress.id === address.id;
   const handleClick: React.MouseEventHandler = (e) => {
     e.preventDefault();
-    const values = parsePartialAddress(address.partial);
-    if (values) dispatch(setAddress(values));
+    dispatch(selectAddressId(address.id));
   };
   return (
-    <AddressSuggestion
-      isHighlighted={isHighlighted}
-      onClick={handleClick}
-    >
+    <AddressSuggestion isHighlighted={isHighlighted} onClick={handleClick}>
       <SuggestionText queryTerm={query.term} addressLabel={address.label} />
     </AddressSuggestion>
   );

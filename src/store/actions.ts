@@ -2,7 +2,7 @@ import { Action } from 'redux';
 import { QueryEntity } from '../entities';
 import { QASResultEntities, quickAddressSearch, getEntitiesFromQASResult, AddressSearchOptions, AddressSearchResults } from '../api';
 import { ThunkAction } from 'redux-thunk';
-import { RootReducerState, getHighlightedAddress, getAddressBeforeHighlighted, getAddressAfterHighlighted, isResultsDismissed } from '.';
+import { RootReducerState, getHighlightedAddress, getAddressBeforeHighlighted, getAddressAfterHighlighted, isResultsDismissed, getAddressById } from '.';
 import { parsePartialAddress } from '../parse-partial-address';
 import { getQueryById } from '.';
 import { QueryState } from '../query-state';
@@ -321,6 +321,17 @@ export const selectHighlightedAddress = (): ThunkAction<void, RootReducerState, 
   dispatch(setAddress(address));
 };
 
+/* Select highlighted address */
+
+export const selectAddressId = (addressId: string): ThunkAction<void, RootReducerState, void, ActionSetAddress> => (dispatch, getState) => {
+  const state = getState();
+  const entity = getAddressById(state, addressId);
+  if (!entity) return;
+  const address = parsePartialAddress(entity.partial);
+  if (!address) return;
+  dispatch(setAddress(address));
+};
+
 /* Action creators */
 
 export const actionCreators = {
@@ -337,4 +348,5 @@ export const actionCreators = {
   incrementActiveResult,
   decrementActiveResult,
   selectHighlightedAddress,
+  selectAddressId,
 };
