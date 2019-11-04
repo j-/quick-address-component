@@ -3,7 +3,6 @@ import { useSelector } from 'react-redux';
 import { MAX_SEARCH_RESULTS } from '../constants';
 import { getLastResolvedQueryResults, isResultsDismissed, isEnteredQuerySignificant } from '../store';
 import QueryResult from './QueryResult';
-import { QueryResultEntity } from '../entities';
 import ResultsContainer from './ResultsContainer';
 
 export interface Props {
@@ -22,7 +21,7 @@ const QueryResults: React.FC<Props> = ({ onClickDismiss }) => {
   return (
     <ResultsContainer onClickDismiss={onClickDismiss}>
       <div className="QueryResults list-group list-group-flush">
-        {queryResults.slice(0, MAX_SEARCH_RESULTS).map((queryResult: QueryResultEntity) => (
+        {queryResults.slice(0, MAX_SEARCH_RESULTS).map((queryResult) => (
           <QueryResult queryResultId={queryResult.id} key={queryResult.id} />
         ))}
       </div>
