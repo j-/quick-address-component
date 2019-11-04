@@ -1,7 +1,7 @@
 import * as React from 'react';
 import AddressSuggestion from './AddressSuggestion';
 import { useSelector, useDispatch } from 'react-redux';
-import { getAddressByQueryResultId, RootReducerState, getHighlightedAddress, getEnteredQuery } from '../store';
+import { getAddressByQueryResultId, RootReducerState, getHighlightedAddress, getAddressQueryTerm } from '../store';
 import { AddressEntity } from '../entities';
 import { selectAddressId } from '../store/actions';
 import SuggestionText from './SuggestionText';
@@ -13,7 +13,7 @@ export interface Props {
 const QueryResult: React.FC<Props> = ({ queryResultId }) => {
   const dispatch = useDispatch();
   const address = useSelector<RootReducerState, AddressEntity | null>((state) => getAddressByQueryResultId(state, queryResultId));
-  const query = useSelector(getEnteredQuery);
+  const queryTerm = useSelector(getAddressQueryTerm);
   const highlightedAddress = useSelector(getHighlightedAddress);
   if (!address) return null;
   const isHighlighted = highlightedAddress !== null && highlightedAddress.id === address.id;
@@ -23,7 +23,7 @@ const QueryResult: React.FC<Props> = ({ queryResultId }) => {
   };
   return (
     <AddressSuggestion isHighlighted={isHighlighted} onClick={handleClick}>
-      <SuggestionText queryTerm={query.term} addressLabel={address.label} />
+      <SuggestionText queryTerm={queryTerm} addressLabel={address.label} />
     </AddressSuggestion>
   );
 };
