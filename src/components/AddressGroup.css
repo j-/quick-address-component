@@ -1,8 +1,8 @@
-.Address-suggest-container {
+.AddressGroup-suggest-container {
   position: relative;
 }
 
-.Address-suggest-results {
+.AddressGroup-suggest-results {
   position: absolute;
   left: 0;
   right: 0;
