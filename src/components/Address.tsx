@@ -7,8 +7,8 @@ export interface Props {
 
 }
 
-const Address: React.FC<Props> = () => {
-  const storeRef = React.useRef(createStore());
+const Address: React.FC<Props> = (props) => {
+  const storeRef = React.useRef(createStore(props));
   return (
     <StoreProvider store={storeRef.current}>
       <AddressGroup />

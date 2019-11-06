@@ -9,11 +9,9 @@ const composeEnhancers = composeWithDevTools({
   actionCreators,
 });
 
-const enhancer = composeEnhancers(
+export default <T>(context?: T) => createStore(rootReducer, composeEnhancers(
   applyMiddleware(
-    thunk as ThunkMiddleware<RootReducerState>,
+    thunk.withExtraArgument(context) as ThunkMiddleware<RootReducerState, any, T>,
     logicMiddleware,
   ),
-);
-
-export default () => createStore(rootReducer, enhancer);
+));
