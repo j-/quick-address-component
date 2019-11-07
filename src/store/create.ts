@@ -1,6 +1,6 @@
 import { createStore, applyMiddleware } from 'redux';
 import rootReducer, { RootReducerState } from '.';
-import { composeWithDevTools } from 'redux-devtools-extension';
+import { composeWithDevTools } from 'redux-devtools-extension/developmentOnly';
 import { actionCreators } from './actions';
 import thunk, { ThunkMiddleware } from 'redux-thunk';
 import { logicMiddleware } from './logic';
