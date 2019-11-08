@@ -5,5 +5,8 @@ import Address from './Address';
 
 storiesOf('Address', module)
   .add('Example', () => (
-    <Address search={quickAddressSearch} />
+    <>
+      <h1 className="mb-3">Residential address</h1>
+      <Address search={quickAddressSearch} />
+    </>
   ));
